@@ -1,0 +1,16 @@
+{
+    "name": "pierre/blog",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pierre\\Blog\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arkistos",
+            "email": "pierre.laco@hotmail.fr"
+        }
+    ],
+    "require": {}
+}

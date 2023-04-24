@@ -1,0 +1,9 @@
+1/ Création du repository 'User'
+2/ Création du système de connection/inscription
+3/ Page d'administration
+4/ Création de post
+5/ Modification/Suppresion de post
+5/ Création de commentaires
+6/ Modération de commentaires
+7/ Gestion des utilisateurs
+8/ Mise en place du visuel

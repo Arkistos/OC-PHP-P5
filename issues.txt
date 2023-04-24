@@ -1,9 +1,15 @@
-1/ Création du repository 'User'
-2/ Création du système de connection/inscription
+Installation de PHP Code Sniffer
+1/ Création de la base de données
+Création des Entitées
+2/ Système de connexion
+3/ Système d' inscription
+
 3/ Page d'administration
 4/ Création de post
-5/ Modification/Suppresion de post
+5/ Modification de post
+Suppresion de post
+
 5/ Création de commentaires
 6/ Modération de commentaires
-7/ Gestion des utilisateurs
-8/ Mise en place du visuel
+8/ Mise en place du visuel (Bootstrap)
+Valider le code par Symfony Insight

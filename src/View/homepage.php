@@ -1,4 +1,4 @@
-<?php $title = "Le blog de l'AVBN" ?>
+<?php $title = "Le blog de l'AVBN"; ?>
 
 <?php ob_start(); ?>
 
@@ -7,22 +7,22 @@
 
 <?php
 foreach ($posts as $post) {
-?>
+    ?>
     <div class="news">
         <h3>
             <?= htmlspecialchars($post->title); ?>
             <em>le <?= $post->frenchCreationDate; ?></em>
         </h3>
         <p>
-            <?= nl2br(htmlspecialchars($post->content));?>
+            <?= nl2br(htmlspecialchars($post->content)); ?>
             <br />
-            <em><a href="?id=<?= urlencode($post->identifier)?>&action=post">Commentaires</a></em>
+            <em><a href="?id=<?= urlencode($post->identifier); ?>&action=post">Commentaires</a></em>
         </p>
     </div>
 <?php
 } // The end of the posts loop.
 ?>
 
-<?php $content = ob_get_clean()?>
+<?php $content = ob_get_clean(); ?>
 
-<?php require('layout.php') ?>
+<?php require 'layout.php'; ?>

@@ -2,8 +2,8 @@
 
 namespace App\Model\Entity;
 
-class Comment{
-
+class Comment
+{
     public string $author;
     public string $comment;
     public string $frenchCreationDate;

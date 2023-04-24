@@ -2,8 +2,8 @@
 
 namespace App\Model\Repository;
 
-use App\Service\Database;
 use App\Model\Entity\Comment;
+use App\Service\Database;
 
 class CommentRepository
 {
@@ -17,12 +17,12 @@ class CommentRepository
         $statement->execute([$post]);
 
         $comments = [];
-        while (($row = $statement->fetch())) {
+        while ($row = $statement->fetch()) {
             $comment = new Comment();
             $comment->author = $row['author'];
             $comment->frenchCreationDate = $row['french_creation_date'];
             $comment->comment = $row['comment'];
-			$comment->identifier = $row['id'];
+            $comment->identifier = $row['id'];
 
             $comments[] = $comment;
         }
@@ -30,23 +30,23 @@ class CommentRepository
         return $comments;
     }
 
-	public function getComment(string $identifier): Comment
-	{
-    	$statement = $this->connection->getConnection()->prepare(
-        	"SELECT id, post_id, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM comments WHERE id = ?"
-    	);
-    	$statement->execute([$identifier]);
+    public function getComment(string $identifier): Comment
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            "SELECT id, post_id, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM comments WHERE id = ?"
+        );
+        $statement->execute([$identifier]);
 
-    	$row = $statement->fetch();
-    	$comment = new Comment();
-    	$comment->author = $row['author'];
-		$comment->post_id = $row['post_id'];
-    	$comment->frenchCreationDate = $row['french_creation_date'];
-    	$comment->comment = $row['comment'];
-    	$comment->identifier = $row['id'];
+        $row = $statement->fetch();
+        $comment = new Comment();
+        $comment->author = $row['author'];
+        $comment->post_id = $row['post_id'];
+        $comment->frenchCreationDate = $row['french_creation_date'];
+        $comment->comment = $row['comment'];
+        $comment->identifier = $row['id'];
 
-    	return $comment;
-	}
+        return $comment;
+    }
 
     public function createComment(string $post, string $author, string $comment): bool
     {
@@ -55,16 +55,16 @@ class CommentRepository
         );
         $affectedLines = $statement->execute([$post, $author, $comment]);
 
-        return ($affectedLines > 0);
+        return $affectedLines > 0;
     }
 
-	public function updateComment(string $id, string $author, string $comment): bool
-	{
-		$statement = $this->connection->getConnection()->prepare(
-			'UPDATE comments SET author=?, comment=?, comment_date=NOW() WHERE id=?'
-		);
-		$affectedLines = $statement->execute(([$author, $comment, $id]));
+    public function updateComment(string $id, string $author, string $comment): bool
+    {
+        $statement = $this->connection->getConnection()->prepare(
+            'UPDATE comments SET author=?, comment=?, comment_date=NOW() WHERE id=?'
+        );
+        $affectedLines = $statement->execute([$author, $comment, $id]);
 
-		return ($affectedLines>0);
-	}
+        return $affectedLines > 0;
+    }
 }

@@ -8,17 +8,17 @@
 <?php
 foreach ($posts as $post) {
     ?>
-    <div class="news">
-        <h3>
-            <?= htmlspecialchars($post->title); ?>
-            <em>le <?= $post->frenchCreationDate; ?></em>
-        </h3>
-        <p>
-            <?= nl2br(htmlspecialchars($post->content)); ?>
-            <br />
-            <em><a href="?id=<?= urlencode($post->identifier); ?>&action=post">Commentaires</a></em>
-        </p>
-    </div>
+<div class="news">
+	<h3>
+		<?= htmlspecialchars($post->title); ?>
+		<em>le <?= $post->updatedAt; ?></em>
+	</h3>
+	<p>
+		<?= nl2br(htmlspecialchars($post->content)); ?>
+		<br />
+		<em><a href="?id=<?= urlencode($post->id); ?>&action=post">Commentaires</a></em>
+	</p>
+</div>
 <?php
 } // The end of the posts loop.
 ?>

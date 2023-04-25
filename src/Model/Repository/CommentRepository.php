@@ -9,20 +9,19 @@ class CommentRepository
 {
     public Database $connection;
 
-    public function getComments(string $post): array
+    public function getComments(int $post): array
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM comments WHERE post_id = ? ORDER BY comment_date DESC"
+            "SELECT id, user_id, content, DATE_FORMAT(createdAt, '%d/%m/%Y à %Hh%imin%ss') AS createdAt FROM comment WHERE post_id = ? ORDER BY createdAt DESC"
         );
         $statement->execute([$post]);
-
         $comments = [];
         while ($row = $statement->fetch()) {
             $comment = new Comment();
-            $comment->author = $row['author'];
-            $comment->frenchCreationDate = $row['french_creation_date'];
-            $comment->comment = $row['comment'];
-            $comment->identifier = $row['id'];
+            $comment->user_id = $row['user_id'];
+            $comment->createdAt = $row['createdAt'];
+            $comment->content = $row['content'];
+            $comment->id = $row['id'];
 
             $comments[] = $comment;
         }
@@ -33,17 +32,17 @@ class CommentRepository
     public function getComment(string $identifier): Comment
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, post_id, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM comments WHERE id = ?"
+            "SELECT id, post_id, user_id, content, DATE_FORMAT(createdAt, '%d/%m/%Y à %Hh%imin%ss') AS createdAt FROM comment WHERE id = ?"
         );
         $statement->execute([$identifier]);
 
         $row = $statement->fetch();
         $comment = new Comment();
-        $comment->author = $row['author'];
+        $comment->user_id = $row['user_id'];
         $comment->post_id = $row['post_id'];
-        $comment->frenchCreationDate = $row['french_creation_date'];
-        $comment->comment = $row['comment'];
-        $comment->identifier = $row['id'];
+        $comment->createdAt = $row['createdAt'];
+        $comment->content = $row['content'];
+        $comment->id = $row['id'];
 
         return $comment;
     }

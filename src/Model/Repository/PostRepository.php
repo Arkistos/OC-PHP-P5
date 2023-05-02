@@ -18,10 +18,10 @@ class PostRepository
 
         $row = $statement->fetch();
         $post = new Post();
-        $post->title = $row['title'];
-        $post->updatedAt = $row['updatedAt'];
-        $post->content = $row['content'];
-        $post->id = $row['id'];
+        $post->setTitle($row['title']);
+        $post->setUpdatedAt($row['updatedAt']);
+        $post->setContent($row['content']);
+        $post->setId($row['id']);
 
         return $post;
     }
@@ -34,10 +34,10 @@ class PostRepository
         $posts = [];
         while ($row = $statement->fetch()) {
             $post = new Post();
-            $post->title = $row['title'];
-            $post->updatedAt = $row['updatedAt'];
-            $post->content = $row['content'];
-            $post->id = $row['id'];
+            $post->setTitle($row['title']);
+            $post->setUpdatedAt($row['updatedAt']);
+            $post->setContent($row['content']);
+            $post->setId($row['id']);
 
             $posts[] = $post;
         }

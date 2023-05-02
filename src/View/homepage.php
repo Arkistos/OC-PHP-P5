@@ -10,13 +10,13 @@ foreach ($posts as $post) {
     ?>
 <div class="news">
 	<h3>
-		<?= htmlspecialchars($post->title); ?>
-		<em>le <?= $post->updatedAt; ?></em>
+		<?= htmlspecialchars($post->getContent()); ?>
+		<em>le <?= $post->getUpdatedAt(); ?></em>
 	</h3>
 	<p>
-		<?= nl2br(htmlspecialchars($post->content)); ?>
+		<?= nl2br(htmlspecialchars($post->getContent())); ?>
 		<br />
-		<em><a href="?id=<?= urlencode($post->id); ?>&action=post">Commentaires</a></em>
+		<em><a href="?id=<?= urlencode($post->getId()); ?>&action=post">Commentaires</a></em>
 	</p>
 </div>
 <?php

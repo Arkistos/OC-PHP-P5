@@ -13,18 +13,18 @@
 
 	<div class="news">
 		<h3>
-			<?= htmlspecialchars($post->title); ?>
-			<em>le <?= $post->updatedAt; ?></em>
+			<?= htmlspecialchars($post->getTitle()); ?>
+			<em>le <?= $post->getUpdatedAt(); ?></em>
 		</h3>
 
 		<p>
-			<?= nl2br(htmlspecialchars($post->content)); ?>
+			<?= nl2br(htmlspecialchars($post->getContent())); ?>
 		</p>
 	</div>
 
 	<h2>Commentaires</h2>
 
-	<form action="index.php?action=addComment&id=<?= $post->id; ?>" method="post">
+	<form action="index.php?action=addComment&id=<?= $post->getId(); ?>" method="post">
 		<div>
 			<label for="author">Auteur</label><br />
 			<input type="text" id="author" name="author" />
@@ -41,10 +41,10 @@
 	<?php
         foreach ($comments as $comment) {
             ?>
-	<p><strong><?= htmlspecialchars($comment->user_id); ?></strong> le <?= $comment->createdAt; ?>
-		<a href="index.php?action=updateComment&id=<?= $comment->id; ?>">Modifier</a>
+	<p><strong><?= htmlspecialchars($comment->getUserId()); ?></strong> le <?= $comment->getCreatedAt(); ?>
+		<a href="index.php?action=updateComment&id=<?= $comment->getId(); ?>">Modifier</a>
 	</p>
-	<p><?= nl2br(htmlspecialchars($comment->content)); ?></p>
+	<p><?= nl2br(htmlspecialchars($comment->getContent())); ?></p>
 	<?php
         }
 			?>

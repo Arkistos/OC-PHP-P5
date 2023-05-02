@@ -18,10 +18,10 @@ class CommentRepository
         $comments = [];
         while ($row = $statement->fetch()) {
             $comment = new Comment();
-            $comment->user_id = $row['user_id'];
-            $comment->createdAt = $row['createdAt'];
-            $comment->content = $row['content'];
-            $comment->id = $row['id'];
+            $comment->setUserId($row['user_id']);
+            $comment->setCreatedAt($row['createdAt']);
+            $comment->setContent($row['content']);
+            $comment->setId($row['id']);
 
             $comments[] = $comment;
         }
@@ -38,11 +38,11 @@ class CommentRepository
 
         $row = $statement->fetch();
         $comment = new Comment();
-        $comment->user_id = $row['user_id'];
-        $comment->post_id = $row['post_id'];
-        $comment->createdAt = $row['createdAt'];
-        $comment->content = $row['content'];
-        $comment->id = $row['id'];
+        $comment->setUserId($row['user_id']);
+        $comment->setPostId($row['post_id']);
+        $comment->setCreatedAt($row['createdAt']);
+        $comment->setContent($row['content']);
+        $comment->setId($row['id']);
 
         return $comment;
     }

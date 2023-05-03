@@ -5,16 +5,17 @@ namespace App\Controller;
 use App\Model\Repository\CommentRepository;
 use App\Service\Database;
 
-class CommentController
+class CommentController extends Controller
 {
-    public function addComment(string $post_id, string $author, $comment)
+    public function addComment(int $post_id, int $user_id, $comment)
     {
         $commentRepository = new CommentRepository();
         $commentRepository->connection = new Database();
 
-        $success = $commentRepository->createComment($post_id, $author, $comment);
+        $success = $commentRepository->createComment($post_id, $user_id, $comment);
         if ($success) {
-            header('Location: index.php?action=post&id='.$post_id);
+            header('Location: /posts/'.$post_id);
+            
         } else {
             throw new \Exception('Pas de passage de commentaire');
         }

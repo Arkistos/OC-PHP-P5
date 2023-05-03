@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}{{post.getTitle()}}{% endblock %}
+
+{% block content %}
+<h1>Le super blog de l'AVBN !</h1>
+<p><a href="/">Retour à la liste des billets</a></p>
+
+<div class="news">
+	<h3>
+		{{ post.getTitle() }}
+		<em>le {{ post.getUpdatedAt() }}</em>
+	</h3>
+
+	<p>
+		{{ post.getContent() }}
+	</p>
+</div>
+
+<h2>Commentaires</h2>
+
+<form action="/addComment/{{ post.getId() }}" method="post">
+	<div>
+		<label for="author">Auteur</label><br />
+		<input type="text" id="author" name="author" />
+	</div>
+	<div>
+		<label for="comment">Commentaire</label><br />
+		<textarea id="comment" name="comment"></textarea>
+	</div>
+	<div>
+		<input type="submit" />
+	</div>
+</form>
+
+{% for comment in comments %}
+<p> <strong>{{ comment.getUserId() }}</strong> le {{ comment.getCreatedAt() }}</p>
+<p>{{ comment.getContent() }}</p>
+{% endfor %}
+
+{% endblock %}

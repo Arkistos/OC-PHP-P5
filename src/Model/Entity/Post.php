@@ -8,8 +8,8 @@ class Post
     protected string $title;
     protected string $excerpt;
     protected string $content;
-    protected string $updatedAt;
-    protected int $userId;
+    protected string $updated_at;
+    protected int $user_id;
 
     public function getId()
     {
@@ -33,12 +33,12 @@ class Post
 
     public function getUpdatedAt()
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
     public function getUserId()
     {
-        return $this->userId;
+        return $this->user_id;
     }
 
     public function setId($id)
@@ -63,11 +63,11 @@ class Post
 
     public function setUpdatedAt($updatedAt)
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updatedAt;
     }
 
     public function setUserId($userId)
     {
-        $this->userId = $userId;
+        $this->user_id = $userId;
     }
 }

@@ -6,10 +6,10 @@ class Comment
 {
     protected int $id;
     protected string $content;
-    protected string $createdAt;
+    protected string $created_at;
     protected bool $approved;
-    protected int $userId;
-    protected int $postId;
+    protected int $user_id;
+    protected int $post_id;
 
     public function getId()
     {
@@ -23,7 +23,7 @@ class Comment
 
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     public function getApproved()
@@ -33,12 +33,12 @@ class Comment
 
     public function getUserId()
     {
-        return $this->userId;
+        return $this->user_id;
     }
 
     public function getPostId()
     {
-        return $this->postId;
+        return $this->post_id;
     }
 
     public function setId($id)
@@ -53,7 +53,7 @@ class Comment
 
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $createdAt;
     }
 
     public function setApproved($approved)
@@ -63,11 +63,11 @@ class Comment
 
     public function setUserId($userId)
     {
-        $this->userId = $userId;
+        $this->user_id = $userId;
     }
 
     public function setPostId($postId)
     {
-        $this->postId = $postId;
+        $this->post_id = $postId;
     }
 }

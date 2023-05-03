@@ -5,42 +5,23 @@ use App\Controller\CommentController;
 use App\Controller\HomeController;
 use App\Controller\PostController;
 
-try {
-    session_start();
-    if (isset($_GET['action']) && '' !== $_GET['action']) {
-        if ('post' === $_GET['action']) {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $identifier = $_GET['id'];
-                $postController = new PostController();
-                $postController->post($identifier);
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
-            }
-        } elseif ('addComment' === $_GET['action']) {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $identifier = $_GET['id'];
+session_start();
 
-                $commentController = new CommentController();
-                $commentController->addComment($identifier, $_POST['author'], $_POST['comment']);
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
-            }
-        } elseif ('login' === $_GET['action']) {
-            if (isset($_POST['email']) && isset($_POST['password'])) {
-                $authenticationController = new AuthenticationController();
-                $authenticationController->login($_POST['email'], $_POST['password']);
-            } else {
-                require 'View/login.php';
-            }
-        } elseif ('logout' === $_GET['action']) {
-            $authenticationController = new AuthenticationController();
-            $authenticationController->logout();
-        } else {
-            throw new Exception("La page que vous recherchez n'existe pas.");
-        }
+
+$uri = $_SERVER['REQUEST_URI'];
+try {
+    if ('/' === $uri) {
+        (new HomeController())->home();
+    } elseif (1 === preg_match('/^\/posts\/(?<id>\d+)$/', $uri, $matches)) {
+        (new PostController())->post($matches['id']);
+    } elseif (1 === preg_match('/^\/addComment\/(?<id>\d+)$/', $uri, $matches)) {
+        (new CommentController())->addComment($matches['id'], 1, $_POST['comment']);
+    } elseif (1 === preg_match('/^\/login$/', $uri)) {
+        (new AuthenticationController())->login();
+    } elseif (1 === preg_match('/^\/logout$/', $uri)) {
+        (new AuthenticationController())->logout();
     } else {
-        $controller = new HomeController();
-        $controller->home();
+        throw new Exception("La page que vous recherchez n'existe pas.");
     }
 } catch (Exception $e) { // S'il y a eu une erreur, alors...
     echo 'Erreur : '.$e->getMessage();

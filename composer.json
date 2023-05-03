@@ -12,5 +12,10 @@
             "email": "pierre.laco@hotmail.fr"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "symfony/var-dumper": "^6.2"
+    },
+    "require": {
+        "twig/twig": "^3.0"
+    }
 }

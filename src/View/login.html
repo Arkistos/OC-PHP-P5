@@ -1,8 +1,10 @@
-<?php $title = 'Login'; ?>
+{% extends "layout.html" %}
 
-<?php ob_start(); ?>
+{% block title %}Login {% endblock %}
 
-<form action="index.php?action=login" method="post">
+
+{% block content %}
+<form action="/login" method="post">
     <label for="email">Email</label>
     <input type="text" id='email' name='email' />
 
@@ -11,8 +13,6 @@
     <input type="submit" />
 </form>
 
-<?= isset($message) ? $message : ''; ?>
+    {{ message }}
 
-<?php $content = ob_get_clean(); ?>
-
-<?php require 'layout.php'; ?>
+{% endblock %}

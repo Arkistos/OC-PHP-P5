@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title%}Le blog de l'AVBN"{% endblock %}
+
+
+{% block content %}
+<h1>Le super blog de l'AVBN !</h1>
+<p>Derniers billets du blog :</p>
+
+{% for post in posts %}
+<div class="news">
+	<h3>
+		{{ post.getTitle() }}
+		<em>le {{ post.updatedAt() }}</em>
+	</h3>
+	<p>
+		{{ post.getContent() }}
+		<br />
+		<em><a href="/posts/{{post.getId()}}">Commentaires</a></em>
+	</p>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -13,3 +13,6 @@ Suppresion de post
 6/ Modération de commentaires
 8/ Mise en place du visuel (Bootstrap)
 Valider le code par Symfony Insight
+
+
+Thème bootstrap : https://startbootstrap.com/theme/personal

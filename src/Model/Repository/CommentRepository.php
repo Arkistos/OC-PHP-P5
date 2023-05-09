@@ -12,9 +12,10 @@ class CommentRepository
     public function getComments(int $post): array
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, user_id, content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at FROM comment WHERE post_id = ? ORDER BY created_at DESC"
+            "SELECT id, user_id, content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at FROM comment WHERE post_id = :post_id ORDER BY created_at DESC",
+            [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $statement->execute([$post]);
+        $statement->execute(['post_id' => $post]);
 
         $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
 
@@ -24,9 +25,10 @@ class CommentRepository
     public function getComment(string $identifier): Comment
     {
         $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, post_id, user_id, content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at FROM comment WHERE id = ?"
+            "SELECT id, post_id, user_id, content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at FROM comment WHERE id = :id",
+            [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $statement->execute([$identifier]);
+        $statement->execute([':id' => $identifier]);
 
         $statement->setFetchMode(\PDO::FETCH_CLASS, Comment::class);
         $comment = $statement->fetch();
@@ -39,9 +41,10 @@ class CommentRepository
     public function createComment(int $post, int $author, string $comment): bool
     {
         $statement = $this->connection->getConnection()->prepare(
-            'INSERT INTO comment(post_id, user_id, content, created_at, approved) VALUES(?, ?, ?, NOW(), false)'
+            'INSERT INTO comment(post_id, user_id, content, created_at, approved) VALUES(:post_id, :user_id, :content, NOW(), false)',
+            [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $affectedLines = $statement->execute([$post, 1, $comment]);
+        $affectedLines = $statement->execute(['post_id' => $post, 'user_id' => 1, 'content' => $comment]);
 
         return $affectedLines > 0;
     }

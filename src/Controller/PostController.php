@@ -10,8 +10,6 @@ class PostController extends Controller
 {
     public function post($post_id)
     {
-        $loader = new \Twig\Loader\FilesystemLoader('../src/View');
-        $twig = new \Twig\Environment($loader);
         $postRepository = new PostRepository();
         $postRepository->connection = new Database();
         $post = $postRepository->getPost($post_id);

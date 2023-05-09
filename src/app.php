@@ -7,7 +7,6 @@ use App\Controller\PostController;
 
 session_start();
 
-
 $uri = $_SERVER['REQUEST_URI'];
 try {
     if ('/' === $uri) {
@@ -20,6 +19,8 @@ try {
         (new AuthenticationController())->login();
     } elseif (1 === preg_match('/^\/logout$/', $uri)) {
         (new AuthenticationController())->logout();
+    } elseif (1 === preg_match('/^\/signUp$/', $uri)) {
+        (new AuthenticationController())->signup();
     } else {
         throw new Exception("La page que vous recherchez n'existe pas.");
     }

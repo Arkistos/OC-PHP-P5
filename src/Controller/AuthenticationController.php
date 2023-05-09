@@ -9,8 +9,6 @@ class AuthenticationController extends Controller
 {
     public function login()
     {
-        $loader = new \Twig\Loader\FilesystemLoader('../src/View');
-        $twig = new \Twig\Environment($loader);
         $message = '';
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $userRepository = new UserRepository();
@@ -24,13 +22,29 @@ class AuthenticationController extends Controller
                 $message = 'Email ou mot de passe incorrect';
             }
         }
-        echo $this->getTwig()->render('login.html', ['message'=>$message]);
-
+        echo $this->getTwig()->render('login.html', ['message' => $message]);
     }
 
     public function logout()
     {
         $_SESSION['logged'] = false;
         header('Location: /');
+    }
+
+    public function signup()
+    {
+        if (isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['email']) && isset($_POST['password'])) {
+            $userRepository = new UserRepository();
+            $userRepository->connection = new Database();
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $success = $userRepository->createUser($_POST['firstname'], $_POST['lastname'], $_POST['email'], $password);
+
+            if ($success) {
+                header('Location: /');
+            }
+            echo $this->getTwig()->render('signup.html', ['message' => 'Inscription impossible']);
+        } else {
+            echo $this->getTwig()->render('signup.html', ['message' => '']);
+        }
     }
 }

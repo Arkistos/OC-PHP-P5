@@ -10,6 +10,7 @@ class User
     protected string $role;
     protected string $email;
     protected string $password;
+    
 
     public function getId()
     {

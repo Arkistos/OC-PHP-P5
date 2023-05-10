@@ -10,7 +10,6 @@ class CommentController extends Controller
     public function addComment(int $post_id, int $user_id, $comment)
     {
         $commentRepository = new CommentRepository();
-        $commentRepository->connection = new Database();
 
         $success = $commentRepository->createComment($post_id, $user_id, $comment);
         if ($success) {

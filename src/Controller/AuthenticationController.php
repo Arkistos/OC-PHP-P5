@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Model\Repository\UserRepository;
-use App\Service\Database;
 
 class AuthenticationController extends Controller
 {
@@ -12,7 +11,6 @@ class AuthenticationController extends Controller
         $message = '';
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $userRepository = new UserRepository();
-            $userRepository->connection = new Database();
 
             $success = $userRepository->checkPassword($_POST['email'], $_POST['password']);
             if ($success) {
@@ -35,7 +33,6 @@ class AuthenticationController extends Controller
     {
         if (isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['email']) && isset($_POST['password'])) {
             $userRepository = new UserRepository();
-            $userRepository->connection = new Database();
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $success = $userRepository->createUser($_POST['firstname'], $_POST['lastname'], $_POST['email'], $password);
 

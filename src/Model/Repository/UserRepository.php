@@ -6,11 +6,9 @@ use App\Service\Database;
 
 class UserRepository
 {
-    public Database $connection;
-
     public function checkPassword(string $email, string $passwordSubmit): bool
     {
-        $statement = $this->connection->getConnection()->prepare(
+        $statement = Database::getConnection()->prepare(
             'SELECT password FROM user WHERE email = :email',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
@@ -26,7 +24,7 @@ class UserRepository
 
     public function createUser(string $firstname, string $lastname, string $email, string $password)
     {
-        $statement = $this->connection->getConnection()->prepare(
+        $statement = Database::getConnection()->prepare(
             'INSERT INTO user(firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );

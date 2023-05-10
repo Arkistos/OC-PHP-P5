@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
-class Controller
+use App\Service\Database;
+
+abstract class Controller
 {
-    protected ?\Twig\Loader\FilesystemLoader $loader;
-    protected ?\Twig\Environment $twig;
+    private ?\Twig\Loader\FilesystemLoader $loader;
+    private ?\Twig\Environment $twig;
+    protected ?\PDO $database;
 
     public function __construct()
     {
@@ -14,7 +17,7 @@ class Controller
         $this->twig->addGlobal('session', isset($_SESSION['logged']) ? $_SESSION['logged'] : false);
     }
 
-    public function getTwig()
+    protected function getTwig()
     {
         return $this->twig;
     }

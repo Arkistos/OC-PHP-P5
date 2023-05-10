@@ -4,14 +4,18 @@ namespace App\Service;
 
 class Database
 {
-    public ?\PDO $database = null;
+    private static ?\PDO $database = null;
 
-    public function getConnection(): \PDO
+    public static function getConnection(): \PDO
     {
-        if (null === $this->database) {
-            $this->database = new \PDO('mysql:host=localhost;dbname=avbn;charset=utf8', 'root', '');
+        if (null === self::$database) {
+            self::$database = new \PDO('mysql:host=localhost;dbname=avbn;charset=utf8', 'root', '');
         }
 
-        return $this->database;
+        return self::$database;
     }
+
+
+
+
 }

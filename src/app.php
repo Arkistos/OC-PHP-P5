@@ -4,6 +4,7 @@ use App\Controller\AuthenticationController;
 use App\Controller\CommentController;
 use App\Controller\HomeController;
 use App\Controller\PostController;
+use App\Model\Entity\Post;
 
 session_start();
 

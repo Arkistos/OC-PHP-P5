@@ -10,12 +10,12 @@ class PostController extends Controller
 {
     public function post($post_id)
     {
+        $database = new Database();
+        
         $postRepository = new PostRepository();
-        $postRepository->connection = new Database();
         $post = $postRepository->getPost($post_id);
 
         $commentRepository = new CommentRepository();
-        $commentRepository->connection = new Database();
         $comments = $commentRepository->getComments($post_id);
 
         echo $this->getTwig()->render('post.html', [

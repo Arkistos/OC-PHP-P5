@@ -22,7 +22,9 @@ try {
         (new AuthenticationController())->logout();
     } elseif (1 === preg_match('/^\/signUp$/', $uri)) {
         (new AuthenticationController())->signup();
-    } else {
+    } elseif(1 === preg_match('/^\/admin$/', $uri)){
+        (new PostController())->admin();
+    }else {
         throw new Exception("La page que vous recherchez n'existe pas.");
     }
 } catch (Exception $e) { // S'il y a eu une erreur, alors...

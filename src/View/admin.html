@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}Administration {% endblock %}
+
+
+{% block content %}
+
+{% for post in posts %}
+
+<div class="card" style="width: 18rem;">
+	<div class="card-body">
+		<h5 class="card-title">{{ post.getTitle() }}</h5>
+		<h6 class="card-subtitle mb-2 text-body-secondary">{{ post.getUpdatedAt() }}</h6>
+		<p class="card-text">{{ post.getContent() }}</p>
+	</div>
+</div>
+{% endfor %}
+
+{% for unapprovedComment in unapprovedComments %}
+
+<div class="card" style="width: 18rem;">
+	<div class="card-body">
+		<h5 class="card-title">{{ unapprovedComment.getUserId() }}</h5>
+		<h6 class="card-subtitle mb-2 text-body-secondary">{{ unapprovedComment.getCreatedAt() }}</h6>
+		<p class="card-text">{{  unapprovedComment.getContent() }}</p>
+	</div>
+</div>
+{% endfor %}
+
+{% endblock %}

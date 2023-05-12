@@ -10,6 +10,8 @@ class Comment
     protected bool $approved;
     protected int $user_id;
     protected int $post_id;
+    protected string $user_firstname;
+    protected string $user_lastname;
 
     public function getId()
     {
@@ -41,6 +43,16 @@ class Comment
         return $this->post_id;
     }
 
+    public function getUserFirstname()
+    {
+        return $this->user_firstname;
+    }
+
+    public function getUserLastname()
+    {
+        return $this->user_lastname;
+    }
+
     public function setId($id)
     {
         $this->id = $id;
@@ -69,5 +81,15 @@ class Comment
     public function setPostId($postId)
     {
         $this->post_id = $postId;
+    }
+
+    public function setUserFirstnam($userFirstname)
+    {
+        $this->user_firstname = $userFirstname;
+    }
+
+    public function setUserLastname($userLastname)
+    {
+        $this->user_lastname = $userLastname;
     }
 }

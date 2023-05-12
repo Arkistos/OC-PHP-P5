@@ -11,7 +11,7 @@ class PostController extends Controller
     public function post($post_id)
     {
         $database = new Database();
-        
+
         $postRepository = new PostRepository();
         $post = $postRepository->getPost($post_id);
 
@@ -23,5 +23,20 @@ class PostController extends Controller
                 'comments' => $comments,
             ]
         );
+    }
+
+    public function admin()
+    {
+        if ('admin' === $_SESSION['user_role']) {
+            $posts = (new PostRepository())->getPosts();
+            $unapprovedComments = (new CommentRepository())->getUnapprovedComments();
+
+            echo $this->getTwig()->render('admin.html', [
+                'posts' => $posts,
+                'unapprovedComments' => $unapprovedComments,
+            ]);
+        } else {
+            header('Location: /');
+        }
     }
 }

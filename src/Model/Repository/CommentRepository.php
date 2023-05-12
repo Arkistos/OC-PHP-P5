@@ -10,11 +10,10 @@ class CommentRepository
     public function getComments(int $post): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT id, user_id, content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at FROM comment WHERE post_id = :post_id ORDER BY created_at DESC",
+            "SELECT comment.id, comment.user_id, comment.content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at, user.firstname as user_firstname, user.lastname as user_lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $statement->execute(['post_id' => $post]);
-
         $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
 
         return $comments;
@@ -34,6 +33,14 @@ class CommentRepository
         $row = $statement->fetch();
 
         return $comment;
+    }
+
+    public function getUnapprovedComments()
+    {
+        $statement = Database::getConnection()->query('SELECT * FROM comment WHERE approved = 0');
+        $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
+
+        return $comments;
     }
 
     public function createComment(int $post, int $author, string $comment): bool

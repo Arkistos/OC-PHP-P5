@@ -12,9 +12,10 @@ class AuthenticationController extends Controller
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $userRepository = new UserRepository();
 
-            $success = $userRepository->checkPassword($_POST['email'], $_POST['password']);
-            if ($success) {
+            $user = $userRepository->checkPassword($_POST['email'], $_POST['password']);
+            if ($user) {
                 $_SESSION['logged'] = true;
+                $_SESSION['user_role'] = $user->getRole();
                 header('Location: /');
             } else {
                 $message = 'Email ou mot de passe incorrect';
@@ -26,6 +27,7 @@ class AuthenticationController extends Controller
     public function logout()
     {
         $_SESSION['logged'] = false;
+        $_SESSION['user_role'] = '';
         header('Location: /');
     }
 
@@ -36,7 +38,7 @@ class AuthenticationController extends Controller
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $success = $userRepository->createUser($_POST['firstname'], $_POST['lastname'], $_POST['email'], $password);
 
-            if ($success) {
+            if ($success > 0) {
                 header('Location: /');
             }
             echo $this->getTwig()->render('signup.html', ['message' => 'Inscription impossible']);

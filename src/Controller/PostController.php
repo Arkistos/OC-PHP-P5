@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
-use App\Service\Database;
+use App\Service\Alerts;
 
 class PostController extends Controller
 {
     public function post($post_id)
     {
-        $database = new Database();
-
         $postRepository = new PostRepository();
         $post = $postRepository->getPost($post_id);
 
@@ -27,7 +26,7 @@ class PostController extends Controller
 
     public function admin()
     {
-        if ('admin' === $_SESSION['user_role']) {
+        if (isset($_SESSION['user']) && 'admin' === $_SESSION['user']->getRole()) {
             $posts = (new PostRepository())->getPosts();
             $unapprovedComments = (new CommentRepository())->getUnapprovedComments();
 
@@ -38,5 +37,46 @@ class PostController extends Controller
         } else {
             header('Location: /');
         }
+    }
+
+    public function addPost()
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /');
+            exit;
+        }
+        /** @var User $user */
+        $user = $_SESSION['user'];
+        if ('admin' !== $user->getRole()) {
+            header('Location: /');
+            exit;
+        }
+
+        // dd([$_POST['title'], $_POST['excerpt'], $_POST['content']]);
+        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt'])) {
+            echo $this->getTwig()->render('addPost.html');
+
+            return;
+        }
+
+        if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt'])) {
+            Alerts::addAlert('danger', 'Champs manquant');
+            echo $this->getTwig()->render('addPost.html');
+
+            return;
+        }
+
+        $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_SESSION['user']->getId());
+        // dd($success);
+        if (!$success) {
+            // array_push($_SESSION['alerts'], ['danger', 'Impossible d\'enregistrer le post']);
+            Alerts::addAlert('danger', 'Impossible d\'enregistrer le post');
+            echo $this->getTwig()->render('addPost.html');
+
+            return;
+        }
+        // array_push($_SESSION['alerts'], ['success', 'Post enregistré']);
+        Alerts::addAlert('success', 'Post enregistré');
+        header('Location: /admin');
     }
 }

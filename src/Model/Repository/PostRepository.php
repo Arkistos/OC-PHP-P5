@@ -4,7 +4,6 @@ namespace App\Model\Repository;
 
 use App\Model\Entity\Post;
 use App\Service\Database;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 class PostRepository
 {
@@ -32,5 +31,16 @@ class PostRepository
         $posts = $statement->fetchAll(\PDO::FETCH_CLASS, Post::class);
 
         return $posts;
+    }
+
+    public function addPost($title, $content, $excerpt, $userId)
+    {
+        $statement = Database::getConnection()->prepare(
+            'INSERT INTO post(title, content, updated_at, excerpt, user_id) VALUES (:title, :content, NOW(), :excerpt, :userId)',
+            [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
+        );
+        $affectedLines = $statement->execute(['title' => $title, 'content' => $content, 'excerpt' => $excerpt, 'userId' => $userId]);
+
+        return 0 < $affectedLines;
     }
 }

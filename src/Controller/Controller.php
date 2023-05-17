@@ -2,23 +2,24 @@
 
 namespace App\Controller;
 
-use App\Service\Database;
+use App\Service\Alerts;
 
 abstract class Controller
 {
     private ?\Twig\Loader\FilesystemLoader $loader;
     private ?\Twig\Environment $twig;
-    protected ?\PDO $database;
 
     public function __construct()
     {
         $this->loader = new \Twig\Loader\FilesystemLoader('../src/View');
         $this->twig = new \Twig\Environment($this->loader);
-        $this->twig->addGlobal('session', isset($_SESSION['logged']) ? $_SESSION['logged'] : false);
+        $this->twig->addGlobal('user', $_SESSION['user'] ?? false);
     }
 
     protected function getTwig()
     {
+        $this->twig->addGlobal('alerts', Alerts::getAlerts());
+
         return $this->twig;
     }
 }

@@ -14,8 +14,7 @@ class AuthenticationController extends Controller
 
             $user = $userRepository->checkPassword($_POST['email'], $_POST['password']);
             if ($user) {
-                $_SESSION['logged'] = true;
-                $_SESSION['user_role'] = $user->getRole();
+                $_SESSION['user'] = $user;
                 header('Location: /');
             } else {
                 $message = 'Email ou mot de passe incorrect';
@@ -26,8 +25,7 @@ class AuthenticationController extends Controller
 
     public function logout()
     {
-        $_SESSION['logged'] = false;
-        $_SESSION['user_role'] = '';
+        unset($_SESSION['user']);
         header('Location: /');
     }
 

@@ -4,9 +4,9 @@ use App\Controller\AuthenticationController;
 use App\Controller\CommentController;
 use App\Controller\HomeController;
 use App\Controller\PostController;
-use App\Model\Entity\Post;
 
 session_start();
+$_SESSION['alerts'] = $_SESSION['alerts'] ?? [];
 
 $uri = $_SERVER['REQUEST_URI'];
 try {
@@ -22,9 +22,11 @@ try {
         (new AuthenticationController())->logout();
     } elseif (1 === preg_match('/^\/signUp$/', $uri)) {
         (new AuthenticationController())->signup();
-    } elseif(1 === preg_match('/^\/admin$/', $uri)){
+    } elseif (1 === preg_match('/^\/admin$/', $uri)) {
         (new PostController())->admin();
-    }else {
+    } elseif (1 == preg_match('/^\/addpost$/', $uri)) {
+        (new PostController())->addPost();
+    } else {
         throw new Exception("La page que vous recherchez n'existe pas.");
     }
 } catch (Exception $e) { // S'il y a eu une erreur, alors...

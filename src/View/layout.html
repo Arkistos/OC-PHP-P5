@@ -41,11 +41,12 @@
       </nav>
       <!-- Header-->
 
-      {% if session %}
+      {% if user %}
       <a href="/logout">logout</a>
       {% else %}
       <a href="/login">login</a>
       {% endif %}
+      {% include "alert.html" %}
 
       {% block content %}{% endblock %}
    </main>

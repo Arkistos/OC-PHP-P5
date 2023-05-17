@@ -7,7 +7,8 @@
 <a href="/addpost">Rédiger un post</a>
 
 {% for post in posts %}
-
+<a href="/updatepost/{{post.getId}}">Modifier</a>
+<a href="/deletepost/{{post.getId}}">Supprimer</a>
 <div class="card" style="width: 18rem;">
 	<div class="card-body">
 		<h5 class="card-title">{{ post.getTitle() }}</h5>

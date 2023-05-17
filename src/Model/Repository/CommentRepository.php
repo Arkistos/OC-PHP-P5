@@ -3,6 +3,7 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\Comment;
+use App\Model\Entity\User;
 use App\Service\Database;
 
 class CommentRepository
@@ -10,11 +11,24 @@ class CommentRepository
     public function getComments(int $post): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT comment.id, comment.user_id, comment.content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at, user.firstname as user_firstname, user.lastname as user_lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
+            "SELECT comment.id, comment.user_id, comment.content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $statement->execute(['post_id' => $post]);
-        $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
+
+        // $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
+        $comments = [];
+        foreach ($statement->fetchAll() as $line) {
+            $comment = new Comment();
+            $user = new User();
+            $user->setFirstname($line['firstname']);
+            $user->setLastname($line['lastname']);
+            $comment->setId($line['id']);
+            $comment->setContent($line['content']);
+            $comment->setCreatedAt($line['created_at']);
+            $comment->setUser($user);
+            array_push($comments, $comment);
+        }
 
         return $comments;
     }

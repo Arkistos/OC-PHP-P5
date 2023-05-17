@@ -12,6 +12,7 @@ class Comment
     protected int $post_id;
     protected string $user_firstname;
     protected string $user_lastname;
+    protected User $user;
 
     public function getId()
     {
@@ -43,14 +44,9 @@ class Comment
         return $this->post_id;
     }
 
-    public function getUserFirstname()
+    public function getUser()
     {
-        return $this->user_firstname;
-    }
-
-    public function getUserLastname()
-    {
-        return $this->user_lastname;
+        return $this->user;
     }
 
     public function setId($id)
@@ -83,13 +79,8 @@ class Comment
         $this->post_id = $postId;
     }
 
-    public function setUserFirstnam($userFirstname)
+    public function setUser(User $user)
     {
-        $this->user_firstname = $userFirstname;
-    }
-
-    public function setUserLastname($userLastname)
-    {
-        $this->user_lastname = $userLastname;
+        $this->user = $user;
     }
 }

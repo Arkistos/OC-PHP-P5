@@ -14,6 +14,10 @@ try {
         (new HomeController())->home();
     } elseif (1 === preg_match('/^\/posts\/(?<id>\d+)$/', $uri, $matches)) {
         (new PostController())->post($matches['id']);
+    } elseif (1 === preg_match('/^\/updatepost\/(?<id>\d+)$/', $uri, $matches)) {
+        (new PostController())->updatepost($matches['id']);
+    } elseif (1 === preg_match('/^\/deletepost\/(?<id>\d+)$/', $uri, $matches)) {
+        (new PostController())->deletePost($matches['id']);
     } elseif (1 === preg_match('/^\/addComment\/(?<id>\d+)$/', $uri, $matches)) {
         (new CommentController())->addComment($matches['id'], 1, $_POST['comment']);
     } elseif (1 === preg_match('/^\/login$/', $uri)) {

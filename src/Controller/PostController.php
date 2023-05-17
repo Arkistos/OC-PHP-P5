@@ -6,6 +6,7 @@ use App\Model\Entity\User;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Service\Alerts;
+use Application\Model\Post\PostRepository as PostPostRepository;
 
 class PostController extends Controller
 {
@@ -69,14 +70,82 @@ class PostController extends Controller
         $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_SESSION['user']->getId());
         // dd($success);
         if (!$success) {
-            // array_push($_SESSION['alerts'], ['danger', 'Impossible d\'enregistrer le post']);
             Alerts::addAlert('danger', 'Impossible d\'enregistrer le post');
             echo $this->getTwig()->render('addPost.html');
 
             return;
         }
-        // array_push($_SESSION['alerts'], ['success', 'Post enregistré']);
         Alerts::addAlert('success', 'Post enregistré');
+        header('Location: /admin');
+    }
+
+    public function updatepost($postId)
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /');
+            exit;
+        }
+        /** @var User $user */
+        $user = $_SESSION['user'];
+        if ('admin' !== $user->getRole()) {
+            header('Location: /');
+            exit;
+        }
+
+        $post = (new PostRepository())->getPost($postId);
+
+        if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content'])) {
+            echo $this->getTwig()->render('updatePost.html', [
+                'post' => $post,
+            ]);
+            return;
+        }
+
+        if (empty($_POST['title']) || empty($_POST['excerpt']) || empty($_POST['content'])) {
+            Alerts::addAlert('danger', 'Champs manquant');
+            echo $this->getTwig()->render('updatePost.html', [
+                'post' => $post,
+            ]);
+            return;
+        }
+
+        $post->setTitle($_POST['title']);
+        $post->setContent($_POST['content']);
+        $post->setExcerpt($_POST['excerpt']);
+        $success = (new PostRepository())->updatePost($post);
+        if(!$success){
+            Alerts::addAlert('danger', 'Impossible d\'effectuer la modification du post');
+            echo $this->getTwig()->render('updatePost.html', [
+                'post' => $post,
+            ]);
+            return;
+        }
+
+        Alerts::addAlert('success', 'Mofication du post effectué');
+        header('Location: /admin');
+    }
+
+    public function deletePost($id){
+
+        if (!isset($_SESSION['user'])) {
+            header('Location: /');
+            exit;
+        }
+        /** @var User $user */
+        $user = $_SESSION['user'];
+        if ('admin' !== $user->getRole()) {
+            header('Location: /');
+            exit;
+        }
+
+        $success = (new PostRepository())->deletePost($id);
+
+        if($success){
+            Alerts::addAlert('success', 'Le post est supprimé');
+        } else {
+            Alerts::addAlert('danger', 'Impossible de supprimer le post');
+        }
+
         header('Location: /admin');
     }
 }

@@ -34,8 +34,8 @@
 </form>
 
 {% for comment in comments %}
-<p> <strong>{{ comment.getUserFirstname }} {{comment.getUserLastname }}</strong> le {{ comment.getCreatedAt() }}</p>
-<p>{{ comment.getContent() }}</p>
+<p> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</p>
+<p>{{ comment.getContent }}</p>
 {% endfor %}
 
 {% endblock %}

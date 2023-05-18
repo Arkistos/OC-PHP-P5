@@ -18,12 +18,10 @@
 </div>
 
 <h2>Commentaires</h2>
-
+{% if user %}
+	
 <form action="/addComment/{{ post.getId() }}" method="post">
-	<div>
-		<label for="author">Auteur</label><br />
-		<input type="text" id="author" name="author" />
-	</div>
+	
 	<div>
 		<label for="comment">Commentaire</label><br />
 		<textarea id="comment" name="comment"></textarea>
@@ -32,7 +30,9 @@
 		<input type="submit" />
 	</div>
 </form>
-
+{% else %}
+<a href="/login">Vous devez être connecté pour commenter le post</a>
+{% endif %} 
 {% for comment in comments %}
 <p> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</p>
 <p>{{ comment.getContent }}</p>

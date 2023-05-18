@@ -6,17 +6,15 @@ use App\Model\Entity\User;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Service\Alerts;
+use Application\Model\Comment\CommentRepository as CommentCommentRepository;
 use Application\Model\Post\PostRepository as PostPostRepository;
 
 class PostController extends Controller
 {
     public function post($post_id)
     {
-        $postRepository = new PostRepository();
-        $post = $postRepository->getPost($post_id);
-
-        $commentRepository = new CommentRepository();
-        $comments = $commentRepository->getComments($post_id);
+        $post =  (new PostRepository())->getPost($post_id);
+        $comments = (new CommentRepository())->getComments($post_id);
 
         echo $this->getTwig()->render('post.html', [
                 'post' => $post,

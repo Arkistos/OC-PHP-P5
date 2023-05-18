@@ -19,12 +19,13 @@
 {% endfor %}
 
 {% for unapprovedComment in unapprovedComments %}
-
+<a href="/confirmcomment/{{unapprovedComment.getId}}">Valider le commentaire</a>
+<a href="/deletecomment/{{unapprovedComment.getId}}">Supprimer le commentaire</a>
 <div class="card" style="width: 18rem;">
 	<div class="card-body">
-		<h5 class="card-title">{{ unapprovedComment.getUserId() }}</h5>
-		<h6 class="card-subtitle mb-2 text-body-secondary">{{ unapprovedComment.getCreatedAt() }}</h6>
-		<p class="card-text">{{ unapprovedComment.getContent() }}</p>
+		<h5 class="card-title">{{ unapprovedComment.getUser.getFirstname}} {{unapprovedComment.getUser.getLastname}}</h5>
+		<h6 class="card-subtitle mb-2 text-body-secondary">{{ unapprovedComment.getCreatedAt }}</h6>
+		<p class="card-text">{{ unapprovedComment.getContent }}</p>
 	</div>
 </div>
 {% endfor %}

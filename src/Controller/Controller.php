@@ -1,19 +1,25 @@
-<?php 
+<?php
 
 namespace App\Controller;
 
-class Controller{
+use App\Service\Alerts;
 
-    protected ?\Twig\Loader\FilesystemLoader $loader;
-    protected ?\Twig\Environment $twig;
+abstract class Controller
+{
+    private ?\Twig\Loader\FilesystemLoader $loader;
+    private ?\Twig\Environment $twig;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->loader = new \Twig\Loader\FilesystemLoader('../src/View');
         $this->twig = new \Twig\Environment($this->loader);
-        $this->twig->addGlobal('session', $_SESSION['logged']);
+        $this->twig->addGlobal('user', $_SESSION['user'] ?? false);
     }
 
-    public function getTwig(){
+    protected function getTwig()
+    {
+        $this->twig->addGlobal('alerts', Alerts::getAlerts());
+
         return $this->twig;
     }
 }

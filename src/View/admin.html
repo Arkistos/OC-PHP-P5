@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Administration {% endblock %}
+
+
+{% block content %}
+<a href="/addpost">Rédiger un post</a>
+
+{% for post in posts %}
+<a href="/updatepost/{{post.getId}}">Modifier</a>
+<a href="/deletepost/{{post.getId}}">Supprimer</a>
+<div class="card" style="width: 18rem;">
+	<div class="card-body">
+		<h5 class="card-title">{{ post.getTitle() }}</h5>
+		<h6 class="card-subtitle mb-2 text-body-secondary">{{ post.getUpdatedAt() }}</h6>
+		<p class="card-text">{{ post.getContent() }}</p>
+	</div>
+</div>
+{% endfor %}
+
+{% for unapprovedComment in unapprovedComments %}
+<a href="/confirmcomment/{{unapprovedComment.getId}}">Valider le commentaire</a>
+<a href="/deletecomment/{{unapprovedComment.getId}}">Supprimer le commentaire</a>
+<div class="card" style="width: 18rem;">
+	<div class="card-body">
+		<h5 class="card-title">{{ unapprovedComment.getUser.getFirstname}} {{unapprovedComment.getUser.getLastname}}</h5>
+		<h6 class="card-subtitle mb-2 text-body-secondary">{{ unapprovedComment.getCreatedAt }}</h6>
+		<p class="card-text">{{ unapprovedComment.getContent }}</p>
+	</div>
+</div>
+{% endfor %}
+
+{% endblock %}

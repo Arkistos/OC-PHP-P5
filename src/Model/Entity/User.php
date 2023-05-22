@@ -36,6 +36,11 @@ class User
         return $this->email;
     }
 
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
     public function setId($id)
     {
         $this->id = $id;
@@ -60,5 +65,4 @@ class User
     {
         $this->email = $email;
     }
-
 }

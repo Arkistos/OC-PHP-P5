@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Modification d'un post {% endblock %}
+
+
+{% block content %}
+<form action="/updatepost/{{post.getId}}" method="post">
+    <label for="title">Titre</label>
+    <input type="text" id='title' name='title' value="{{post.getTitle}}"/>
+
+    <label for="excerpt">Excerpt</label>
+    <textarea name="excerpt" id="excerpt" cols="30" rows="10">{{post.getExcerpt}}</textarea>
+
+    <label for="content">Texte</label>
+    <textarea name="content" id="content" cols="30" rows="10">{{post.getContent}}</textarea>
+
+    <input type="submit" />
+</form>
+
+    {{ message }}
+
+{% endblock %}

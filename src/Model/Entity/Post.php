@@ -11,6 +11,7 @@ class Post
     protected string $updated_at;
     protected int $user_id;
 
+
     public function getId()
     {
         return $this->id;

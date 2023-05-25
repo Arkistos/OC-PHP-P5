@@ -16,6 +16,7 @@ class AuthenticationController extends Controller
             if ($user) {
                 $_SESSION['user'] = $user;
                 header('Location: /');
+                return;
             } else {
                 $message = 'Email ou mot de passe incorrect';
             }
@@ -27,6 +28,7 @@ class AuthenticationController extends Controller
     {
         unset($_SESSION['user']);
         header('Location: /');
+        return;
     }
 
     public function signup(): void
@@ -38,6 +40,7 @@ class AuthenticationController extends Controller
 
             if ($success > 0) {
                 header('Location: /');
+                return;
             }
             echo $this->getTwig()->render('signup.html', ['message' => 'Inscription impossible']);
         } else {
@@ -49,33 +52,34 @@ class AuthenticationController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+            return;
         }
         $users = (new UserRepository())->getUsers();
         echo $this->getTwig()->render('users.html', ['users' => $users]);
     }
 
-    public function setRole($id, $role):void
+    public function setRole(int $id, string $role):void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+            return;
         }
         $role = 'user' === $role ? 'admin' : 'user';
         $success = (new UserRepository())->updateRole($id, $role);
 
         header('Location: /admin/users');
+        return;
     }
 }

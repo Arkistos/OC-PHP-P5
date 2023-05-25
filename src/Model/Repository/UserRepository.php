@@ -24,7 +24,7 @@ class UserRepository
         return false;
     }
 
-    public function createUser(string $firstname, string $lastname, string $email, string $password): bool
+    public function createUser(string $firstname, string $lastname, string $email, string $password): int
     {
         $statement = Database::getConnection()->prepare(
             'SELECT email FROM user WHERE email = :email',
@@ -42,7 +42,7 @@ class UserRepository
             );
             $affectedLines = $statement->execute(['firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'password' => $password]);
 
-            return $affectedLines > 0;
+            return $affectedLines;
         }
     }
 
@@ -56,7 +56,7 @@ class UserRepository
         return $users;
     }
 
-    public function updateRole($id, $role): bool
+    public function updateRole(int $id, string $role): bool
     {
         $statement = Database::getConnection()->prepare(
             'UPDATE user SET role=:role WHERE id=:id',

@@ -29,7 +29,7 @@ class Comment
         return $this->created_at;
     }
 
-    public function getApproved():string
+    public function getApproved():bool
     {
         return $this->approved;
     }

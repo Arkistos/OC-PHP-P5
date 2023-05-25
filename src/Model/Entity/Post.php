@@ -37,7 +37,7 @@ class Post
         return $this->updated_at;
     }
 
-    public function getUserId():string
+    public function getUserId():int
     {
         return $this->user_id;
     }

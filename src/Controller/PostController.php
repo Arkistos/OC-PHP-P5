@@ -33,6 +33,7 @@ class PostController extends Controller
             ]);
         } else {
             header('Location: /');
+            return;
         }
     }
 
@@ -40,13 +41,13 @@ class PostController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+            return;
         }
 
         if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt'])) {
@@ -78,13 +79,13 @@ class PostController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+            return;
         }
 
         $post = (new PostRepository())->getPost($postId);
@@ -127,13 +128,13 @@ class PostController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+            return;
         }
 
         $success = (new PostRepository())->deletePost($id);
@@ -145,5 +146,6 @@ class PostController extends Controller
         }
 
         header('Location: /admin');
+        return;
     }
 }

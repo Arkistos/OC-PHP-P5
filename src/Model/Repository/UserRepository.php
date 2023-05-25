@@ -24,7 +24,7 @@ class UserRepository
         return false;
     }
 
-    public function createUser(string $firstname, string $lastname, string $email, string $password): int
+    public function createUser(string $firstname, string $lastname, string $email, string $password): bool
     {
         $statement = Database::getConnection()->prepare(
             'SELECT email FROM user WHERE email = :email',
@@ -32,7 +32,7 @@ class UserRepository
         );
         $statement->execute(['email' => $email]);
         if (count($statement->fetchAll()) > 0) {
-            return -1;
+            return false;
         } else {
             $statement = Database::getConnection()->prepare(
                 'INSERT INTO user(firstname, lastname, role, email, password) 

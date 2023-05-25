@@ -16,7 +16,6 @@ class CommentRepository
         );
         $statement->execute(['post_id' => $post]);
 
-        // $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
         $comments = [];
         foreach ($statement->fetchAll() as $line) {
             $comment = new Comment();
@@ -51,8 +50,6 @@ class CommentRepository
 
     public function getUnapprovedComments(): array
     {
-        // $statement = Database::getConnection()->query('SELECT * FROM comment WHERE approved = 0');
-        // $comments = $statement->fetchAll(\PDO::FETCH_CLASS, Comment::class);
         $statement = Database::getConnection()->prepare(
             "SELECT comment.id, comment.user_id, comment.content, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 0 ORDER BY created_at DESC",
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]

@@ -38,7 +38,7 @@ class AuthenticationController extends Controller
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $success = $userRepository->createUser($_POST['firstname'], $_POST['lastname'], $_POST['email'], $password);
 
-            if ($success > 0) {
+            if ($success) {
                 header('Location: /');
                 return;
             }

@@ -64,7 +64,7 @@ class PostController extends Controller
         }
 
         $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_SESSION['user']->getId());
-        // dd($success);
+     
         if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'enregistrer le post');
             echo $this->getTwig()->render('addPost.html');

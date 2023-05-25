@@ -4,12 +4,10 @@ namespace App\Controller;
 
 use App\Model\Repository\CommentRepository;
 use App\Service\Alerts;
-use App\Service\Database;
-use Application\Model\Comment\CommentRepository as CommentCommentRepository;
 
 class CommentController extends Controller
 {
-    public function addComment(int $post_id)
+    public function addComment(int $post_id):void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /posts/'.$post_id);
@@ -31,7 +29,7 @@ class CommentController extends Controller
         header('Location: /posts/'.$post_id);
     }
 
-    public function approveComment($comment_id){
+    public function approveComment(int $comment_id):void{
         $success = (new CommentRepository())->approveComment($comment_id);
 
         if($success){
@@ -43,7 +41,7 @@ class CommentController extends Controller
         return;
     }
 
-    public function deleteComment($comment_id){
+    public function deleteComment(int $comment_id):void{
         $success = (new CommentRepository())->deleteComment($comment_id);
 
         if($success){

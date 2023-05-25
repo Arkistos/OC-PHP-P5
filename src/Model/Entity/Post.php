@@ -12,62 +12,62 @@ class Post
     protected int $user_id;
 
 
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
 
-    public function getTitle()
+    public function getTitle():string
     {
         return $this->title;
     }
 
-    public function getExcerpt()
+    public function getExcerpt():string
     {
         return $this->excerpt;
     }
 
-    public function getContent()
+    public function getContent():string
     {
         return $this->content;
     }
 
-    public function getUpdatedAt()
+    public function getUpdatedAt():string
     {
         return $this->updated_at;
     }
 
-    public function getUserId()
+    public function getUserId():string
     {
         return $this->user_id;
     }
 
-    public function setId($id)
+    public function setId(int $id):void
     {
         $this->id = $id;
     }
 
-    public function setTitle($title)
+    public function setTitle(string $title):void
     {
         $this->title = $title;
     }
 
-    public function setExcerpt($excerpt)
+    public function setExcerpt(string $excerpt):void
     {
         $this->excerpt = $excerpt;
     }
 
-    public function setContent($content)
+    public function setContent(string $content):void
     {
         $this->content = $content;
     }
 
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(string $updatedAt):void
     {
         $this->updated_at = $updatedAt;
     }
 
-    public function setUserId($userId)
+    public function setUserId(int $userId):void
     {
         $this->user_id = $userId;
     }

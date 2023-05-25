@@ -6,14 +6,12 @@ use App\Model\Entity\User;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Service\Alerts;
-use Application\Model\Comment\CommentRepository as CommentCommentRepository;
-use Application\Model\Post\PostRepository as PostPostRepository;
 
 class PostController extends Controller
 {
-    public function post($post_id)
+    public function post(int $post_id): void
     {
-        $post =  (new PostRepository())->getPost($post_id);
+        $post = (new PostRepository())->getPost($post_id);
         $comments = (new CommentRepository())->getComments($post_id);
 
         echo $this->getTwig()->render('post.html', [
@@ -23,7 +21,7 @@ class PostController extends Controller
         );
     }
 
-    public function admin()
+    public function admin(): void
     {
         if (isset($_SESSION['user']) && 'admin' === $_SESSION['user']->getRole()) {
             $posts = (new PostRepository())->getPosts();
@@ -38,7 +36,7 @@ class PostController extends Controller
         }
     }
 
-    public function addPost()
+    public function addPost(): void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
@@ -51,7 +49,6 @@ class PostController extends Controller
             exit;
         }
 
-        // dd([$_POST['title'], $_POST['excerpt'], $_POST['content']]);
         if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt'])) {
             echo $this->getTwig()->render('addPost.html');
 
@@ -77,7 +74,7 @@ class PostController extends Controller
         header('Location: /admin');
     }
 
-    public function updatepost($postId)
+    public function updatepost(int $postId): void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
@@ -96,6 +93,7 @@ class PostController extends Controller
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
+
             return;
         }
 
@@ -104,6 +102,7 @@ class PostController extends Controller
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
+
             return;
         }
 
@@ -111,11 +110,12 @@ class PostController extends Controller
         $post->setContent($_POST['content']);
         $post->setExcerpt($_POST['excerpt']);
         $success = (new PostRepository())->updatePost($post);
-        if(!$success){
+        if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'effectuer la modification du post');
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
+
             return;
         }
 
@@ -123,8 +123,8 @@ class PostController extends Controller
         header('Location: /admin');
     }
 
-    public function deletePost($id){
-
+    public function deletePost(int $id): void
+    {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
             exit;
@@ -138,7 +138,7 @@ class PostController extends Controller
 
         $success = (new PostRepository())->deletePost($id);
 
-        if($success){
+        if ($success) {
             Alerts::addAlert('success', 'Le post est supprimé');
         } else {
             Alerts::addAlert('danger', 'Impossible de supprimer le post');

@@ -30,8 +30,14 @@ try {
         (new PostController())->admin();
     } elseif (1 == preg_match('/^\/addpost$/', $uri)) {
         (new PostController())->addPost();
+    } elseif (1 === preg_match('/^\/admin\/users$/', $uri)){
+        (new AuthenticationController())->users();
+    } elseif(1===preg_match('/^\/admin\/setRole\/(?<id>\d+)\/(?<role>[a-zA-Z]+$)/',$uri,$matches)){
+        (new AuthenticationController())->setRole($matches['id'], $matches['role']);
     } elseif(1===preg_match('/^\/confirmcomment\/(?<id>\d+$)/',$uri,$matches)){
         (new CommentController())->approveComment($matches['id']);
+    } elseif(1===preg_match('/^\/confirmcomment\/(?<id>\d+$)/',$uri,$matches)){
+        (new AuthenticationController())->approveUser($matches['id']);
     } elseif(1===preg_match('/^\/deletecomment\/(?<id>\d+$)/',$uri,$matches)){
         (new CommentController())->deleteComment($matches['id']);
     } else {

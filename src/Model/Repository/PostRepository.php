@@ -33,7 +33,7 @@ class PostRepository
         return $posts;
     }
 
-    public function addPost($title, $content, $excerpt, $userId)
+    public function addPost(string $title, string $content, string $excerpt, int $userId):bool
     {
         $statement = Database::getConnection()->prepare(
             'INSERT INTO post(title, content, updated_at, excerpt, user_id) VALUES (:title, :content, NOW(), :excerpt, :userId)',
@@ -44,7 +44,7 @@ class PostRepository
         return 0 < $affectedLines;
     }
 
-    public function updatePost($post){
+    public function updatePost(Post $post):bool{
         $statement = Database::getConnection()->prepare(
             'UPDATE post SET title=:title, content=:content, excerpt=:excerpt, updated_at=NOW(), user_id=:user_id WHERE id=:id',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
@@ -59,7 +59,7 @@ class PostRepository
         return $affectedLines>0;
     }
 
-    public function deletePost($postId){
+    public function deletePost(int $postId):bool{
         $statement = Database::getConnection()->prepare(
             'DELETE FROM post WHERE id=:id',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]

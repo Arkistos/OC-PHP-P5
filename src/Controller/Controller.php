@@ -16,7 +16,7 @@ abstract class Controller
         $this->twig->addGlobal('user', $_SESSION['user'] ?? false);
     }
 
-    protected function getTwig()
+    protected function getTwig():?\Twig\Environment
     {
         $this->twig->addGlobal('alerts', Alerts::getAlerts());
 

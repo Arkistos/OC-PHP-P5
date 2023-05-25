@@ -8,7 +8,7 @@ use App\Service\Database;
 
 class HomeController extends Controller
 {
-    public function home()
+    public function home():void
     {
         $repository = new PostRepository();
         $posts = $repository->getPosts();

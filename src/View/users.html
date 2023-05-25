@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+
+{% block content %}
+
+{% for user in users %}
+    <a href="/admin/setRole/{{user.getId}}/{{user.getRole}}">Changer le role</a>
+<div class="card" style="width: 18rem;">
+	<div class="card-body">
+		<h5 class="card-title">{{ user.getEmail }}</h5>
+        <p>{{user.getRole}}</p>
+	</div>
+</div>
+{% endfor %}
+
+{% endblock %}

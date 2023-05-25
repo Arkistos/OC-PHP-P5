@@ -7,7 +7,7 @@ use App\Service\Database;
 
 class UserRepository
 {
-    public function checkPassword(string $email, string $passwordSubmit)
+    public function checkPassword(string $email, string $passwordSubmit): bool
     {
         $statement = Database::getConnection()->prepare(
             'SELECT * FROM user WHERE email = :email',
@@ -24,7 +24,7 @@ class UserRepository
         return false;
     }
 
-    public function createUser(string $firstname, string $lastname, string $email, string $password)
+    public function createUser(string $firstname, string $lastname, string $email, string $password): bool
     {
         $statement = Database::getConnection()->prepare(
             'SELECT email FROM user WHERE email = :email',
@@ -42,7 +42,28 @@ class UserRepository
             );
             $affectedLines = $statement->execute(['firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'password' => $password]);
 
-            return $affectedLines;
+            return $affectedLines > 0;
         }
+    }
+
+    public function getUsers(): array
+    {
+        $statement = Database::getConnection()->query(
+            'SELECT id, firstname, lastname, role, email FROM user'
+        );
+        $users = $statement->fetchAll(\PDO::FETCH_CLASS, User::class);
+
+        return $users;
+    }
+
+    public function updateRole($id, $role): bool
+    {
+        $statement = Database::getConnection()->prepare(
+            'UPDATE user SET role=:role WHERE id=:id',
+            [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
+        );
+        $affectedLines = $statement->execute(['role' => $role, 'id' => $id]);
+
+        return $affectedLines > 0;
     }
 }

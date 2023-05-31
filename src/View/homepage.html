@@ -1,22 +1,51 @@
 {% extends "layout.html" %}
 
-{% block title%}Le blog de l'AVBN"{% endblock %}
+{% block title%}Pierre Lacaud développeur{% endblock %}
 
 
 {% block content %}
-<h1>Le super blog de l'AVBN !</h1>
-<p>Derniers billets du blog :</p>
 
-{% for post in posts %}
+<div class="container hero">
+    <div class="row align-items-center">
+        <div class="col text-center">
+            <h1>Pierre Lacaud</h1>
+            <p>J'explore avec enthousiasme les rouages du monde du code</p>
+            <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" target="_blank" href="/assets/cv.pdf">CV</a>
+            <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="projects.html">Projects</a>
+        </div>
+        <div class="col">
+            <img id='profile_pic' src="/assets/profilepic.png" alt="Photo de profile">
+        </div>
 
-<div class="card" style="width: 18rem;">
-	<div class="card-body">
-		<h5 class="card-title">{{ post.getTitle() }}</h5>
-		<h6 class="card-subtitle mb-2 text-body-secondary">{{ post.getUpdatedAt() }}</h6>
-		<p class="card-text">{{ post.getContent() }}</p>
-		<a href="/posts/{{post.getId}}" class="card-link">Commentaires</a>
-	</div>
+    </div>
 </div>
-{% endfor %}
+
+
+
+
+<form class="contact-form" action="/" method="post">
+    <h2>Contact</h2>
+    <!-- Name input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" name="name" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+        <label for="name">Nom</label>
+        <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+    </div>
+    <!-- Email address input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" name="email" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+        <label for="email">Email address</label>
+        <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+    </div>
+    <!-- Message input-->
+    <div class="form-floating mb-3">
+        <textarea class="form-control" name="message" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
+        <label for="message">Message</label>
+        <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+    </div>
+    
+    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
+</form>
 
 {% endblock %}

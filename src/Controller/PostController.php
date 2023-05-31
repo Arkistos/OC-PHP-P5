@@ -9,6 +9,13 @@ use App\Service\Alerts;
 
 class PostController extends Controller
 {
+    public function posts()
+    {
+        $repository = new PostRepository();
+        $posts = $repository->getPosts();
+        echo $this->getTwig()->render('posts.html', ['posts' => $posts]);
+    }
+
     public function post(int $post_id): void
     {
         $post = (new PostRepository())->getPost($post_id);
@@ -33,6 +40,7 @@ class PostController extends Controller
             ]);
         } else {
             header('Location: /');
+
             return;
         }
     }
@@ -41,12 +49,14 @@ class PostController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
+
             return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
+
             return;
         }
 
@@ -64,7 +74,7 @@ class PostController extends Controller
         }
 
         $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_SESSION['user']->getId());
-     
+
         if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'enregistrer le post');
             echo $this->getTwig()->render('addPost.html');
@@ -79,12 +89,14 @@ class PostController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
+
             return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
+
             return;
         }
 
@@ -128,12 +140,14 @@ class PostController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
+
             return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
+
             return;
         }
 
@@ -146,6 +160,7 @@ class PostController extends Controller
         }
 
         header('Location: /admin');
+
         return;
     }
 }

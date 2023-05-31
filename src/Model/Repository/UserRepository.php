@@ -7,7 +7,7 @@ use App\Service\Database;
 
 class UserRepository
 {
-    public function checkPassword(string $email, string $passwordSubmit): bool
+    public function checkPassword(string $email, string $passwordSubmit)
     {
         $statement = Database::getConnection()->prepare(
             'SELECT * FROM user WHERE email = :email',

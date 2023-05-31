@@ -3,15 +3,15 @@
 {% block title %}{{post.getTitle()}}{% endblock %}
 
 {% block content %}
-<h1>Le super blog de l'AVBN !</h1>
-<p><a href="/">Retour à la liste des billets</a></p>
 
 <div class="news">
-	<h3>
-		{{ post.getTitle() }}
-		<em>le {{ post.getUpdatedAt() }}</em>
-	</h3>
-
+	<h1>
+		{{ post.getTitle }}
+		
+	</h1>
+	<h2>{{post.getExcerpt}}</h2>
+	<em>le {{ post.getUpdatedAt() }}</em>
+	<em>par {{post.getAuthor}}</em>
 	<p>
 		{{ post.getContent() }}
 	</p>

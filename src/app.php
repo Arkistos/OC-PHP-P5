@@ -12,6 +12,8 @@ $uri = $_SERVER['REQUEST_URI'];
 try {
     if ('/' === $uri) {
         (new HomeController())->home();
+    } elseif (1 === preg_match('/^\/posts$/', $uri)) {
+        (new PostController())->posts();
     } elseif (1 === preg_match('/^\/posts\/(?<id>\d+)$/', $uri, $matches)) {
         (new PostController())->post($matches['id']);
     } elseif (1 === preg_match('/^\/updatepost\/(?<id>\d+)$/', $uri, $matches)) {
@@ -24,21 +26,19 @@ try {
         (new AuthenticationController())->login();
     } elseif (1 === preg_match('/^\/logout$/', $uri)) {
         (new AuthenticationController())->logout();
-    } elseif (1 === preg_match('/^\/signUp$/', $uri)) {
+    } elseif (1 === preg_match('/^\/signup$/', $uri)) {
         (new AuthenticationController())->signup();
     } elseif (1 === preg_match('/^\/admin$/', $uri)) {
         (new PostController())->admin();
     } elseif (1 == preg_match('/^\/addpost$/', $uri)) {
         (new PostController())->addPost();
-    } elseif (1 === preg_match('/^\/admin\/users$/', $uri)){
+    } elseif (1 === preg_match('/^\/admin\/users$/', $uri)) {
         (new AuthenticationController())->users();
-    } elseif(1===preg_match('/^\/admin\/setRole\/(?<id>\d+)\/(?<role>[a-zA-Z]+$)/',$uri,$matches)){
+    } elseif (1 === preg_match('/^\/admin\/setRole\/(?<id>\d+)\/(?<role>[a-zA-Z]+$)/', $uri, $matches)) {
         (new AuthenticationController())->setRole($matches['id'], $matches['role']);
-    } elseif(1===preg_match('/^\/confirmcomment\/(?<id>\d+$)/',$uri,$matches)){
+    } elseif (1 === preg_match('/^\/confirmcomment\/(?<id>\d+$)/', $uri, $matches)) {
         (new CommentController())->approveComment($matches['id']);
-    } elseif(1===preg_match('/^\/confirmcomment\/(?<id>\d+$)/',$uri,$matches)){
-        (new AuthenticationController())->approveUser($matches['id']);
-    } elseif(1===preg_match('/^\/deletecomment\/(?<id>\d+$)/',$uri,$matches)){
+    } elseif (1 === preg_match('/^\/deletecomment\/(?<id>\d+$)/', $uri, $matches)) {
         (new CommentController())->deleteComment($matches['id']);
     } else {
         throw new Exception("La page que vous recherchez n'existe pas.");

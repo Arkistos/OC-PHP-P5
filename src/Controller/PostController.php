@@ -60,20 +60,20 @@ class PostController extends Controller
             return;
         }
 
-        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt'])) {
+        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt']) || !isset($_POST['author'])) {
             echo $this->getTwig()->render('addPost.html');
 
             return;
         }
 
-        if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt'])) {
+        if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt']) || empty($_POST['author'])) {
             Alerts::addAlert('danger', 'Champs manquant');
             echo $this->getTwig()->render('addPost.html');
 
             return;
         }
 
-        $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_SESSION['user']->getId());
+        $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_POST['author']);
 
         if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'enregistrer le post');
@@ -99,10 +99,9 @@ class PostController extends Controller
 
             return;
         }
-
         $post = (new PostRepository())->getPost($postId);
 
-        if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content'])) {
+        if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content']) || !isset($_POST['author'])) {
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
@@ -110,7 +109,7 @@ class PostController extends Controller
             return;
         }
 
-        if (empty($_POST['title']) || empty($_POST['excerpt']) || empty($_POST['content'])) {
+        if (empty($_POST['title']) || empty($_POST['excerpt']) || empty($_POST['content']) || empty($_POST['author'])) {
             Alerts::addAlert('danger', 'Champs manquant');
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
@@ -122,6 +121,7 @@ class PostController extends Controller
         $post->setTitle($_POST['title']);
         $post->setContent($_POST['content']);
         $post->setExcerpt($_POST['excerpt']);
+        $post->setAuthor($_POST['author']);
         $success = (new PostRepository())->updatePost($post);
         if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'effectuer la modification du post');

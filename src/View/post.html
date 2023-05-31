@@ -4,38 +4,39 @@
 
 {% block content %}
 
-<div class="news">
-	<h1>
-		{{ post.getTitle }}
-		
-	</h1>
-	<h2>{{post.getExcerpt}}</h2>
-	<em>le {{ post.getUpdatedAt() }}</em>
-	<em>par {{post.getAuthor}}</em>
-	<p>
-		{{ post.getContent() }}
-	</p>
+
+<div class="post col-lg-8 margin-auto">
+	<section >
+		<h1 class="text-center">
+			{{ post.getTitle }}
+		</h1>
+		<h2 class="text-center">{{post.getExcerpt}}</h2>
+		<em>le {{ post.getUpdatedAt }} par {{post.getAuthor}}</em>
+		<p class="text-justify">
+			{{ post.getContent() }}
+		</p>
+	</section>
+	<section class="mb-5  margin-auto">
+		<div class="card bg-light">
+			<div class="card-body">
+				<!-- Comment form-->
+				{% if user %}
+				<form class="mb-4" action="/addComment/{{ post.getId() }}" method="post">
+					<textarea id="comment" name="comment" class="form-control" rows="3" placeholder="Laissez un commentaire"></textarea>
+					<input type="submit" value="Envoyer" />
+				</form>
+				{% else %}
+				<a href="/login">Vous devez être connecté pour commenter le post</a>
+				{% endif %}
+				{% for comment in comments %}
+				<div class="ms-3">
+					<div class="fw-bold"> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</div>
+					{{ comment.getContent }}
+				</div>
+				{% endfor %}
+
+			</div>
+		</div>
+	</section>
 </div>
-
-<h2>Commentaires</h2>
-{% if user %}
-	
-<form action="/addComment/{{ post.getId() }}" method="post">
-	
-	<div>
-		<label for="comment">Commentaire</label><br />
-		<textarea id="comment" name="comment"></textarea>
-	</div>
-	<div>
-		<input type="submit" />
-	</div>
-</form>
-{% else %}
-<a href="/login">Vous devez être connecté pour commenter le post</a>
-{% endif %} 
-{% for comment in comments %}
-<p> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</p>
-<p>{{ comment.getContent }}</p>
-{% endfor %}
-
 {% endblock %}

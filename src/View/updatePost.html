@@ -4,19 +4,28 @@
 
 
 {% block content %}
-<form action="/updatepost/{{post.getId}}" method="post">
-    <label for="title">Titre</label>
-    <input type="text" id='title' name='title' value="{{post.getTitle}}"/>
 
-    <label for="excerpt">Excerpt</label>
-    <textarea name="excerpt" id="excerpt" cols="30" rows="10">{{post.getExcerpt}}</textarea>
-
-    <label for="content">Texte</label>
-    <textarea name="content" id="content" cols="30" rows="10">{{post.getContent}}</textarea>
-
-    <input type="submit" />
+<form action="/updatepost/{{post.getId}}" method="post" class="col-lg-6 margin-auto">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="author" placeholder="Auteur" name='author' value="{{post.getAuthor}}">
+        <label for="author">Auteur</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="title" placeholder="Titre" name="title" value="{{post.getTitle}}">
+        <label for="title">Titre</label>
+    </div>
+    <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="Chapô" id="excerpt" name='excerpt'>{{post.getExcerpt}}</textarea>
+        <label for="excerpt">Chapô</label>
+    </div>
+    <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="Texte" id="content" name="content">{{post.getContent}}</textarea>
+        <label for="content">Texte</label>
+    </div>
+    <div class="col-2 margin-auto">
+        <button class="btn btn-primary" type="submit">Valider</button>
+    </div>
 </form>
 
-    {{ message }}
 
 {% endblock %}

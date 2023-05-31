@@ -6,11 +6,14 @@
 {% block content %}
 
 {% for user in users %}
-    <a href="/admin/setRole/{{user.getId}}/{{user.getRole}}">Changer le role</a>
-<div class="card" style="width: 18rem;">
+<div class="card margin-auto mb-3" style="width: 18rem;">
 	<div class="card-body">
-		<h5 class="card-title">{{ user.getEmail }}</h5>
-        <p>{{user.getRole}}</p>
+		<h5 class="card-title">{{ user.getFirstname}} {{user.getLastname}}</h5>
+		<h6 class="card-subtitle mb-2 text-body-secondary">{{user.getEmail}}</h6>
+		<p class="card-text">{{ user.getRole }}</p>
+		<div class="btn-group" role="group">
+			<a href="/admin/setRole/{{user.getId}}/{{user.getRole}}"><button type="button" class="btn btn-primary">Changer le role</button></a>
+		</div>
 	</div>
 </div>
 {% endfor %}

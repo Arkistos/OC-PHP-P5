@@ -33,13 +33,13 @@ class PostRepository
         return $posts;
     }
 
-    public function addPost(string $title, string $content, string $excerpt, int $userId): bool
+    public function addPost(string $title, string $content, string $excerpt, string $author): bool
     {
         $statement = Database::getConnection()->prepare(
-            'INSERT INTO post(title, content, updated_at, excerpt, user_id) VALUES (:title, :content, NOW(), :excerpt, :userId)',
+            'INSERT INTO post(title, content, updated_at, excerpt, author) VALUES (:title, :content, NOW(), :excerpt, :author)',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $affectedLines = $statement->execute(['title' => $title, 'content' => $content, 'excerpt' => $excerpt, 'userId' => $userId]);
+        $affectedLines = $statement->execute(['title' => $title, 'content' => $content, 'excerpt' => $excerpt, 'author' => $author]);
 
         return 0 < $affectedLines;
     }
@@ -47,14 +47,14 @@ class PostRepository
     public function updatePost(Post $post): bool
     {
         $statement = Database::getConnection()->prepare(
-            'UPDATE post SET title=:title, content=:content, excerpt=:excerpt, updated_at=NOW(), user_id=:user_id WHERE id=:id',
+            'UPDATE post SET title=:title, content=:content, excerpt=:excerpt, updated_at=NOW(), author=:author WHERE id=:id',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $affectedLines = $statement->execute([
             'title' => $post->getTitle(),
             'content' => $post->getContent(),
             'excerpt' => $post->getExcerpt(),
-            'user_id' => $_SESSION['user']->getId(),
+            'author' => $post->getAuthor(),
             'id' => $post->getId(),
         ]);
 

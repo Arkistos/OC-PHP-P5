@@ -4,19 +4,33 @@
 
 
 {% block content %}
-<form action="/signUp" method="post">
-    <label for="firstname">Prénom</label>
-    <input type="text" id='firstname' name='firstname' />
-    <label for="lastname">Nom</label>
-    <input type="text" id='lastname' name='lastname' />
-    <label for="email">Email</label>
-    <input type="text" id='email' name='email' />
 
-    <label for="password">Mot de passe</label>
-    <input type="password" id="password" name="password" />
-    <input type="submit" />
+<h1 class="display-5 fw-bolder mb-5 text-center"><span class="text-gradient d-inline">Inscription</span></h1>
+
+<form action="/signup" method="post" class="col-lg-4 margin-auto">
+    <div class="row">
+        <div class="form-floating mb-3 col-lg-6">
+            <input type="text" class="form-control" id="firstname" placeholder="Prénom" name='firstname'>
+            <label for="firstname">Prénom</label>
+        </div>
+        <div class="form-floating mb-3 col-lg-6">
+            <input type="text" class="form-control" id="title" placeholder="Nom" name="lastname">
+            <label for="lastname">Nom</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-floating mb-3 col-lg-6">
+            <input type="text" class="form-control" id="email" placeholder="Email" name='email'>
+            <label for="email">Email</label>
+        </div>
+        <div class="form-floating mb-3 col-lg-6">
+            <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
+            <label for="password">Mot de passe</label>
+        </div>
+    </div>
+    <div class="col-2 margin-auto">
+        <button class="btn btn-primary" type="submit">Valider</button>
+    </div>
 </form>
-
-    {{ message }}
 
 {% endblock %}

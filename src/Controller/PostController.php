@@ -9,7 +9,7 @@ use App\Service\Alerts;
 
 class PostController extends Controller
 {
-    public function posts()
+    public function posts(): void
     {
         $repository = new PostRepository();
         $posts = $repository->getPosts();

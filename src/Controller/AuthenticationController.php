@@ -9,21 +9,30 @@ class AuthenticationController extends Controller
 {
     public function login(): void
     {
-        $message = '';
-        if (isset($_POST['email']) && isset($_POST['password'])) {
-            $userRepository = new UserRepository();
+        if (!isset($_POST['email']) || !isset($_POST['password'])) {
+            echo $this->getTwig()->render('login.html');
 
-            $user = $userRepository->checkPassword($_POST['email'], $_POST['password']);
-            if ($user) {
-                $_SESSION['user'] = $user;
-                header('Location: /');
-
-                return;
-            } else {
-                Alerts::addAlert('danger', 'Email ou mot de passe incorrect');
-            }
+            return;
         }
-        echo $this->getTwig()->render('login.html', ['message' => $message]);
+        if (empty($_POST['email']) || empty($_POST['password'])) {
+            Alerts::addAlert('danger', 'Champs manquant');
+            echo $this->getTwig()->render('login.html');
+
+            return;
+        }
+
+        $userRepository = new UserRepository();
+
+        $user = $userRepository->checkPassword($_POST['email'], $_POST['password']);
+        if ($user->getId() < 0) {
+            Alerts::addAlert('danger', 'Email ou mot de passe incorrect');
+            echo $this->getTwig()->render('login.html');
+
+            return;
+        }
+
+        $_SESSION['user'] = $user;
+        header('Location: /');
     }
 
     public function logout(): void

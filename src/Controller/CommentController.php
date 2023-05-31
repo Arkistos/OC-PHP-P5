@@ -11,7 +11,7 @@ class CommentController extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /posts/'.$post_id);
-            exit;
+            return;
         }
 
         if(empty($_POST['comment'])){

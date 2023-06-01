@@ -105,7 +105,7 @@ class CommentRepository
         return $affectedLines > 0;
     }
 
-    public function countUnapprovedComments($id): int
+    public function countUnapprovedComments(int $id): int
     {
         $statement = Database::getConnection()->prepare(
             'SELECT COUNT(*) FROM comment WHERE post_id = :post_id AND approved = 0',

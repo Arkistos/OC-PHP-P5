@@ -10,10 +10,10 @@
 		<h1 class="text-center">
 			{{ post.getTitle }}
 		</h1>
-		<h2 class="text-center">{{post.getExcerpt}}</h2>
+		<h2 class="text-center">{{post.getExcerpt | nl2br}}</h2>
 		<em>le {{ post.getUpdatedAt }} par {{post.getAuthor}}</em>
 		<p class="text-justify">
-			{{ post.getContent() }}
+			{{ post.getContent | nl2br}}
 		</p>
 	</section>
 	<section class="mb-5  margin-auto">
@@ -33,6 +33,13 @@
 					<div class="fw-bold"> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</div>
 					{{ comment.getContent }}
 				</div>
+				{% if user %}
+				<a href="/deletecomment/{{comment.getId}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+				{% if comment.getApproved == false %}
+				<a href="/confirmcomment/{{comment.getId}}"><button type="button" class="btn btn-success">Valider</button></a>
+				{% endif %}
+				{% endif %}
+				
 				{% endfor %}
 
 			</div>

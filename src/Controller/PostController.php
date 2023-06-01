@@ -30,19 +30,29 @@ class PostController extends Controller
 
     public function admin(): void
     {
-        if (isset($_SESSION['user']) && 'admin' === $_SESSION['user']->getRole()) {
-            $posts = (new PostRepository())->getPosts();
-            $unapprovedComments = (new CommentRepository())->getUnapprovedComments();
-
-            echo $this->getTwig()->render('admin.html', [
-                'posts' => $posts,
-                'unapprovedComments' => $unapprovedComments,
-            ]);
-        } else {
+        if (!isset($_SESSION['user'])) {
             header('Location: /');
 
             return;
         }
+        /** @var User $user */
+        $user = $_SESSION['user'];
+        if ('admin' !== $user->getRole()) {
+            header('Location: /');
+
+            return;
+        }
+
+        $posts = (new PostRepository())->getPosts();
+        $unapprovedComments = [];
+        foreach ($posts as $post) {
+            $unapprovedComments += [$post->getId() => (new CommentRepository())->countUnapprovedComments($post->getId())];
+        }
+
+        echo $this->getTwig()->render('admin.html', [
+            'posts' => $posts,
+            'unapprovedComments' => $unapprovedComments,
+        ]);
     }
 
     public function addPost(): void

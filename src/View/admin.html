@@ -5,10 +5,10 @@
 
 {% block content %}
 <div class="row mb-3">
-<a href="/admin/users"><button type="button" class="btn btn-primary">Gestion des utilisateurs</button></a>
+	<a href="/admin/users"><button type="button" class="btn btn-primary">Gestion des utilisateurs</button></a>
 </div>
 <div class="row">
-<a href="/addpost"><button type="button" class="btn btn-primary">Rédiger un post</button></a>
+	<a href="/addpost"><button type="button" class="btn btn-primary">Rédiger un post</button></a>
 </div>
 <section class="py-5">
 	<div class="container px-5 mb-5">
@@ -22,16 +22,24 @@
 
 				<!-- Project Card 1-->
 				<div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+
 					<div class="card-body p-0">
 						<div class="d-flex align-items-center">
 							<div class="p-5">
 								<h2 class="post fw-bolder">{{post.getTitle}}</h2>
+
+
 								<p>Écrit le {{post.getUpdatedAt}}</p>
 								<p class="post">{{post.getExcerpt}}</p>
 								<div class="btn-group" role="group">
 									<a href="/posts/{{post.getId}}"><button type="button" class="btn btn-primary">Lire</button></a>
 									<a href="/updatepost/{{post.getId}}"><button type="button" class="btn btn-warning">Modifier</button></a> </a>
 									<a href="/deletepost/{{post.getId}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+									{% if unapprovedComments[post.getId]>0%}
+									<span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+										{{unapprovedComments[post.getId]}}
+									</span>
+									{% endif %}
 								</div>
 							</div>
 						</div>
@@ -43,21 +51,5 @@
 	</div>
 </section>
 
-{% for unapprovedComment in unapprovedComments %}
-<section class="mb-5 margin-auto">
-	
-<div class="card margin-auto" style="width: 18rem;">
-	<div class="card-body">
-		<h5 class="card-title">{{ unapprovedComment.getUser.getFirstname}} {{unapprovedComment.getUser.getLastname}}</h5>
-		<h6 class="card-subtitle mb-2 text-body-secondary">{{ unapprovedComment.getCreatedAt }}</h6>
-		<p class="card-text">{{ unapprovedComment.getContent }}</p>
-		<div class="btn-group" role="group">
-			<a href="/confirmcomment/{{unapprovedComment.getId}}"><button type="button" class="btn btn-success">Valider</button></a> </a>
-			<a href="/deletecomment/{{unapprovedComment.getId}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
-		</div>
-	</div>
-</div>
-</section>
-{% endfor %}
 
 {% endblock %}

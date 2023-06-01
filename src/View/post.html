@@ -3,39 +3,47 @@
 {% block title %}{{post.getTitle()}}{% endblock %}
 
 {% block content %}
-<h1>Le super blog de l'AVBN !</h1>
-<p><a href="/">Retour à la liste des billets</a></p>
 
-<div class="news">
-	<h3>
-		{{ post.getTitle() }}
-		<em>le {{ post.getUpdatedAt() }}</em>
-	</h3>
 
-	<p>
-		{{ post.getContent() }}
-	</p>
+<div class="post col-lg-8 margin-auto">
+	<section >
+		<h1 class="text-center">
+			{{ post.getTitle }}
+		</h1>
+		<h2 class="text-center">{{post.getExcerpt | nl2br}}</h2>
+		<em>le {{ post.getUpdatedAt }} par {{post.getAuthor}}</em>
+		<p class="text-justify">
+			{{ post.getContent | nl2br}}
+		</p>
+	</section>
+	<section class="mb-5  margin-auto">
+		<div class="card bg-light">
+			<div class="card-body">
+				<!-- Comment form-->
+				{% if user %}
+				<form class="mb-4" action="/addComment/{{ post.getId() }}" method="post">
+					<textarea id="comment" name="comment" class="form-control" rows="3" placeholder="Laissez un commentaire"></textarea>
+					<input type="submit" value="Envoyer" />
+				</form>
+				{% else %}
+				<a href="/login">Vous devez être connecté pour commenter le post</a>
+				{% endif %}
+				{% for comment in comments %}
+				<div class="ms-3">
+					<div class="fw-bold"> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</div>
+					{{ comment.getContent }}
+				</div>
+				{% if user %}
+				<a href="/deletecomment/{{comment.getId}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+				{% if comment.getApproved == false %}
+				<a href="/confirmcomment/{{comment.getId}}"><button type="button" class="btn btn-success">Valider</button></a>
+				{% endif %}
+				{% endif %}
+				
+				{% endfor %}
+
+			</div>
+		</div>
+	</section>
 </div>
-
-<h2>Commentaires</h2>
-{% if user %}
-	
-<form action="/addComment/{{ post.getId() }}" method="post">
-	
-	<div>
-		<label for="comment">Commentaire</label><br />
-		<textarea id="comment" name="comment"></textarea>
-	</div>
-	<div>
-		<input type="submit" />
-	</div>
-</form>
-{% else %}
-<a href="/login">Vous devez être connecté pour commenter le post</a>
-{% endif %} 
-{% for comment in comments %}
-<p> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</p>
-<p>{{ comment.getContent }}</p>
-{% endfor %}
-
 {% endblock %}

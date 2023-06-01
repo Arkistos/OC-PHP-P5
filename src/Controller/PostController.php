@@ -6,14 +6,19 @@ use App\Model\Entity\User;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Service\Alerts;
-use Application\Model\Comment\CommentRepository as CommentCommentRepository;
-use Application\Model\Post\PostRepository as PostPostRepository;
 
 class PostController extends Controller
 {
-    public function post($post_id)
+    public function posts(): void
     {
-        $post =  (new PostRepository())->getPost($post_id);
+        $repository = new PostRepository();
+        $posts = $repository->getPosts();
+        echo $this->getTwig()->render('posts.html', ['posts' => $posts]);
+    }
+
+    public function post(int $post_id): void
+    {
+        $post = (new PostRepository())->getPost($post_id);
         $comments = (new CommentRepository())->getComments($post_id);
 
         echo $this->getTwig()->render('post.html', [
@@ -23,50 +28,63 @@ class PostController extends Controller
         );
     }
 
-    public function admin()
-    {
-        if (isset($_SESSION['user']) && 'admin' === $_SESSION['user']->getRole()) {
-            $posts = (new PostRepository())->getPosts();
-            $unapprovedComments = (new CommentRepository())->getUnapprovedComments();
-
-            echo $this->getTwig()->render('admin.html', [
-                'posts' => $posts,
-                'unapprovedComments' => $unapprovedComments,
-            ]);
-        } else {
-            header('Location: /');
-        }
-    }
-
-    public function addPost()
+    public function admin(): void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+
+            return;
         }
 
-        // dd([$_POST['title'], $_POST['excerpt'], $_POST['content']]);
-        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt'])) {
+        $posts = (new PostRepository())->getPosts();
+        $unapprovedComments = [];
+        foreach ($posts as $post) {
+            $unapprovedComments += [$post->getId() => (new CommentRepository())->countUnapprovedComments($post->getId())];
+        }
+
+        echo $this->getTwig()->render('admin.html', [
+            'posts' => $posts,
+            'unapprovedComments' => $unapprovedComments,
+        ]);
+    }
+
+    public function addPost(): void
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /');
+
+            return;
+        }
+        /** @var User $user */
+        $user = $_SESSION['user'];
+        if ('admin' !== $user->getRole()) {
+            header('Location: /');
+
+            return;
+        }
+
+        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt']) || !isset($_POST['author'])) {
             echo $this->getTwig()->render('addPost.html');
 
             return;
         }
 
-        if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt'])) {
+        if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt']) || empty($_POST['author'])) {
             Alerts::addAlert('danger', 'Champs manquant');
             echo $this->getTwig()->render('addPost.html');
 
             return;
         }
 
-        $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_SESSION['user']->getId());
-        // dd($success);
+        $success = (new PostRepository())->addPost($_POST['title'], $_POST['content'], $_POST['excerpt'], $_POST['author']);
+
         if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'enregistrer le post');
             echo $this->getTwig()->render('addPost.html');
@@ -77,45 +95,50 @@ class PostController extends Controller
         header('Location: /admin');
     }
 
-    public function updatepost($postId)
+    public function updatepost(int $postId): void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
-        }
 
+            return;
+        }
         $post = (new PostRepository())->getPost($postId);
 
-        if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content'])) {
+        if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content']) || !isset($_POST['author'])) {
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
+
             return;
         }
 
-        if (empty($_POST['title']) || empty($_POST['excerpt']) || empty($_POST['content'])) {
+        if (empty($_POST['title']) || empty($_POST['excerpt']) || empty($_POST['content']) || empty($_POST['author'])) {
             Alerts::addAlert('danger', 'Champs manquant');
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
+
             return;
         }
 
         $post->setTitle($_POST['title']);
         $post->setContent($_POST['content']);
         $post->setExcerpt($_POST['excerpt']);
+        $post->setAuthor($_POST['author']);
         $success = (new PostRepository())->updatePost($post);
-        if(!$success){
+        if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'effectuer la modification du post');
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
             ]);
+
             return;
         }
 
@@ -123,27 +146,31 @@ class PostController extends Controller
         header('Location: /admin');
     }
 
-    public function deletePost($id){
-
+    public function deletePost(int $id): void
+    {
         if (!isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
+
+            return;
         }
         /** @var User $user */
         $user = $_SESSION['user'];
         if ('admin' !== $user->getRole()) {
             header('Location: /');
-            exit;
+
+            return;
         }
 
         $success = (new PostRepository())->deletePost($id);
 
-        if($success){
+        if ($success) {
             Alerts::addAlert('success', 'Le post est supprimé');
         } else {
             Alerts::addAlert('danger', 'Impossible de supprimer le post');
         }
 
         header('Location: /admin');
+
+        return;
     }
 }

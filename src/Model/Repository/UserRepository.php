@@ -7,7 +7,7 @@ use App\Service\Database;
 
 class UserRepository
 {
-    public function checkPassword(string $email, string $passwordSubmit)
+    public function checkPassword(string $email, string $passwordSubmit): User
     {
         $statement = Database::getConnection()->prepare(
             'SELECT * FROM user WHERE email = :email',
@@ -21,10 +21,13 @@ class UserRepository
             return $user;
         }
 
-        return false;
+        $user = new User();
+        $user->setId(-1);
+
+        return $user;
     }
 
-    public function createUser(string $firstname, string $lastname, string $email, string $password)
+    public function createUser(string $firstname, string $lastname, string $email, string $password): bool
     {
         $statement = Database::getConnection()->prepare(
             'SELECT email FROM user WHERE email = :email',
@@ -32,7 +35,7 @@ class UserRepository
         );
         $statement->execute(['email' => $email]);
         if (count($statement->fetchAll()) > 0) {
-            return -1;
+            return false;
         } else {
             $statement = Database::getConnection()->prepare(
                 'INSERT INTO user(firstname, lastname, role, email, password) 
@@ -44,5 +47,26 @@ class UserRepository
 
             return $affectedLines;
         }
+    }
+
+    public function getUsers(): array
+    {
+        $statement = Database::getConnection()->query(
+            'SELECT id, firstname, lastname, role, email FROM user'
+        );
+        $users = $statement->fetchAll(\PDO::FETCH_CLASS, User::class);
+
+        return $users;
+    }
+
+    public function updateRole(int $id, string $role): bool
+    {
+        $statement = Database::getConnection()->prepare(
+            'UPDATE user SET role=:role WHERE id=:id',
+            [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
+        );
+        $affectedLines = $statement->execute(['role' => $role, 'id' => $id]);
+
+        return $affectedLines > 0;
     }
 }

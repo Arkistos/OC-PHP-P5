@@ -1,0 +1,8 @@
+{
+    "name": "PLacaud",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "Blog et portfolio"
+   
+  }

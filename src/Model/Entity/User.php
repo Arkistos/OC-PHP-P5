@@ -11,57 +11,57 @@ class User
     protected string $email;
     protected string $password;
 
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
 
-    public function getFirstname()
+    public function getFirstname():string
     {
         return $this->firstname;
     }
 
-    public function getLastname()
+    public function getLastname():string
     {
         return $this->lastname;
     }
 
-    public function getRole()
+    public function getRole():string
     {
         return $this->role;
     }
 
-    public function getEmail()
+    public function getEmail():string
     {
         return $this->email;
     }
 
-    public function getPassword()
+    public function getPassword():string
     {
         return $this->password;
     }
 
-    public function setId($id)
+    public function setId(int $id):void
     {
         $this->id = $id;
     }
 
-    public function setFirstname($firstname)
+    public function setFirstname(string $firstname):void
     {
         $this->firstname = $firstname;
     }
 
-    public function setLastname($lastname)
+    public function setLastname(string $lastname):void
     {
         $this->lastname = $lastname;
     }
 
-    public function setRole($role)
+    public function setRole(string $role):void
     {
         $this->role = $role;
     }
 
-    public function setEmail($email)
+    public function setEmail(string $email):void
     {
         $this->email = $email;
     }

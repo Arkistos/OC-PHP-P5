@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title%}Liste des posts{% endblock %}
+
+
+{% block content %}
+<section class="py-5">
+	<div class="container px-5 mb-5">
+		<div class="text-center mb-5">
+			<h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Le Blog</span></h1>
+		</div>
+		<div class="row gx-5 justify-content-center">
+			<div class="col-lg-11 col-xl-9 col-xxl-8">
+
+				{% for post in posts %}
+
+				<!-- Project Card 1-->
+				<div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+					<div class="card-body p-0">
+						<div class="d-flex align-items-center">
+							<div class="p-5">
+								<h2 class="post fw-bolder">{{post.getTitle}}</h2>
+								<p>Écrit le {{post.getUpdatedAt}}</p>
+								<p class="post">{{post.getExcerpt}}</p>
+								<a href="/posts/{{post.getId}}"><button type="button" class="btn btn-primary">Lire</button></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+{% endblock %}

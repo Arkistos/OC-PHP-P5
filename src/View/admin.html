@@ -4,30 +4,52 @@
 
 
 {% block content %}
-<a href="/addpost">Rédiger un post</a>
-
-{% for post in posts %}
-<a href="/updatepost/{{post.getId}}">Modifier</a>
-<a href="/deletepost/{{post.getId}}">Supprimer</a>
-<div class="card" style="width: 18rem;">
-	<div class="card-body">
-		<h5 class="card-title">{{ post.getTitle() }}</h5>
-		<h6 class="card-subtitle mb-2 text-body-secondary">{{ post.getUpdatedAt() }}</h6>
-		<p class="card-text">{{ post.getContent() }}</p>
-	</div>
+<div class="row mb-3">
+	<a href="/admin/users"><button type="button" class="btn btn-primary">Gestion des utilisateurs</button></a>
 </div>
-{% endfor %}
-
-{% for unapprovedComment in unapprovedComments %}
-<a href="/confirmcomment/{{unapprovedComment.getId}}">Valider le commentaire</a>
-<a href="/deletecomment/{{unapprovedComment.getId}}">Supprimer le commentaire</a>
-<div class="card" style="width: 18rem;">
-	<div class="card-body">
-		<h5 class="card-title">{{ unapprovedComment.getUser.getFirstname}} {{unapprovedComment.getUser.getLastname}}</h5>
-		<h6 class="card-subtitle mb-2 text-body-secondary">{{ unapprovedComment.getCreatedAt }}</h6>
-		<p class="card-text">{{ unapprovedComment.getContent }}</p>
-	</div>
+<div class="row">
+	<a href="/addpost"><button type="button" class="btn btn-primary">Rédiger un post</button></a>
 </div>
-{% endfor %}
+<section class="py-5">
+	<div class="container px-5 mb-5">
+		<div class="text-center mb-5">
+			<h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Les Posts</span></h1>
+		</div>
+		<div class="row gx-5 justify-content-center">
+			<div class="col-lg-11 col-xl-9 col-xxl-8">
+
+				{% for post in posts %}
+
+				<!-- Project Card 1-->
+				<div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+
+					<div class="card-body p-0">
+						<div class="d-flex align-items-center">
+							<div class="p-5">
+								<h2 class="post fw-bolder">{{post.getTitle}}</h2>
+
+
+								<p>Écrit le {{post.getUpdatedAt}}</p>
+								<p class="post">{{post.getExcerpt}}</p>
+								<div class="btn-group" role="group">
+									<a href="/posts/{{post.getId}}"><button type="button" class="btn btn-primary">Lire</button></a>
+									<a href="/updatepost/{{post.getId}}"><button type="button" class="btn btn-warning">Modifier</button></a> </a>
+									<a href="/deletepost/{{post.getId}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+									{% if unapprovedComments[post.getId]>0%}
+									<span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+										{{unapprovedComments[post.getId]}}
+									</span>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</section>
+
 
 {% endblock %}

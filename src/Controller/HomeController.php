@@ -2,17 +2,27 @@
 
 namespace App\Controller;
 
-use App\Model\Entity\User;
-use App\Model\Repository\PostRepository;
-use App\Service\Database;
+use App\Service\Alerts;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 
 class HomeController extends Controller
 {
-    public function home()
+    public function home(): void
     {
-        $repository = new PostRepository();
-        $posts = $repository->getPosts();
+        if (isset($_POST['message']) && isset($_POST['name']) && isset($_POST['email'])) {
+            $transport = Transport::fromDsn('smtp://qm6jw42kyg@privaterelay.appleid.com:PM8zwgnQJ47AWsGE@smtp-relay.sendinblue.com:587');
+            $mailer = new Mailer($transport);
+            $email = (new Email())
+                ->from('expediteur@gmail.com')
+                ->to('pierre.lacaud@gmail.com')
+                ->subject('Message du blog')
+                ->text('message de '.$_POST['name'].' : '.$_POST['message']);
+            $mailer->send($email);
+            Alerts::addAlert('success', 'Votre message à été envoyé');
+        }
 
-        echo $this->getTwig()->render('homepage.html', ['posts' => $posts]);
+        echo $this->getTwig()->render('homepage.html');
     }
 }

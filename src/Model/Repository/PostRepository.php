@@ -19,7 +19,7 @@ class PostRepository
         $statement = $statement->fetch();
         $user = new User();
         $post = new Post();
-        $user->setId($statement['post_id']);
+        $user->setId($statement['user_id']);
         $user->setFirstname($statement['firstname']);
         $user->setLastname($statement['lastname']);
         $post->setId($statement['post_id']);

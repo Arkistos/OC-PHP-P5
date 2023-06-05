@@ -38,7 +38,7 @@ Ce projet est un blog développé en PHP dans le cadre du cours "Développez vot
 
 ## Fonctionnalités
 
-- Affichage des articles avec pagination
+- Affichage des articles
 - Affichage des commentaires associés à chaque article
 - Ajout de nouveaux articles
 - Modification et suppression des articles existants (accès réservé aux administrateurs)

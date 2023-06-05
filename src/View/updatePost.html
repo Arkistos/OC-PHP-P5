@@ -6,10 +6,11 @@
 {% block content %}
 
 <form action="/updatepost/{{post.getId}}" method="post" class="col-lg-6 margin-auto">
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="author" placeholder="Auteur" name='author' value="{{post.getAuthor}}">
-        <label for="author">Auteur</label>
-    </div>
+    <select class="form-select  mb-3" aria-label="Default select example" id="author" name="author">
+        {% for admin in admins %}
+        <option value={{admin.getId}}>{{admin.getFirstname}} {{admin.getLastname}}</option>
+        {% endfor %}
+      </select>
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="title" placeholder="Titre" name="title" value="{{post.getTitle}}">
         <label for="title">Titre</label>

@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function home(): void
     {
         if (isset($_POST['message']) && isset($_POST['name']) && isset($_POST['email'])) {
-            $transport = Transport::fromDsn('smtp://qm6jw42kyg@privaterelay.appleid.com:PM8zwgnQJ47AWsGE@smtp-relay.sendinblue.com:587');
+            $transport = Transport::fromDsn(MAILER);
             $mailer = new Mailer($transport);
             $email = (new Email())
                 ->from('expediteur@gmail.com')

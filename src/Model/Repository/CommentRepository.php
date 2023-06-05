@@ -11,7 +11,7 @@ class CommentRepository
     public function getComments(int $post): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT comment.id, comment.user_id, comment.content, comment.approved, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
+            "SELECT comment.id, comment.user_id, comment.content, comment.approved, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $statement->execute(['post_id' => $post]);

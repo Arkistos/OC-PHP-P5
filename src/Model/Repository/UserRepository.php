@@ -59,6 +59,16 @@ class UserRepository
         return $users;
     }
 
+    public function getAdmins(): array
+    {
+        $statement = Database::getConnection()->query(
+            'SELECT id, firstname, lastname, role, email FROM user WHERE role="admin"'
+        );
+        $users = $statement->fetchAll(\PDO::FETCH_CLASS, User::class);
+
+        return $users;
+    }
+
     public function updateRole(int $id, string $role): bool
     {
         $statement = Database::getConnection()->prepare(

@@ -9,8 +9,7 @@ class Post
     protected string $excerpt;
     protected string $content;
     protected string $updated_at;
-    protected string $author;
-    protected int $user_id;
+    protected User $user;
 
     public function getId(): int
     {
@@ -37,14 +36,9 @@ class Post
         return $this->updated_at;
     }
 
-    public function getAuthor(): string
+    public function getUser():User
     {
-        return $this->author;
-    }
-
-    public function getUserId(): int
-    {
-        return $this->user_id;
+        return $this->user;
     }
 
     public function setId(int $id): void
@@ -72,13 +66,8 @@ class Post
         $this->updated_at = $updatedAt;
     }
 
-    public function setAuthor(string $author): void
+    public function setUser(User $user):void
     {
-        $this->author = $author;
-    }
-
-    public function setUserId(int $userId): void
-    {
-        $this->user_id = $userId;
+        $this->user = $user;
     }
 }

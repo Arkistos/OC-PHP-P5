@@ -11,7 +11,7 @@
 			{{ post.getTitle }}
 		</h1>
 		<h2 class="text-center">{{post.getExcerpt | nl2br}}</h2>
-		<em>le {{ post.getUpdatedAt }} par {{post.getAuthor}}</em>
+		<em>le {{ post.getUpdatedAt }} par {{post.getUser.getFirstname}} {{post.getUser.getLastname}}</em>
 		<p class="text-justify">
 			{{ post.getContent | nl2br}}
 		</p>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Entity\User;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
+use App\Model\Repository\UserRepository;
 use App\Service\Alerts;
 
 class PostController extends Controller
@@ -70,15 +71,17 @@ class PostController extends Controller
             return;
         }
 
-        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt']) || !isset($_POST['author'])) {
-            echo $this->getTwig()->render('addPost.html');
+        $admins = (new UserRepository())->getAdmins();
+       
 
+        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt']) || !isset($_POST['author'])) {
+            echo $this->getTwig()->render('addPost.html', ['admins'=>$admins]);
             return;
         }
 
         if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt']) || empty($_POST['author'])) {
             Alerts::addAlert('danger', 'Champs manquant');
-            echo $this->getTwig()->render('addPost.html');
+            echo $this->getTwig()->render('addPost.html',['admins'=>$admins]);
 
             return;
         }
@@ -110,10 +113,12 @@ class PostController extends Controller
             return;
         }
         $post = (new PostRepository())->getPost($postId);
+        $admins = (new UserRepository())->getAdmins();
 
         if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content']) || !isset($_POST['author'])) {
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
+                'admins' => $admins
             ]);
 
             return;
@@ -131,7 +136,9 @@ class PostController extends Controller
         $post->setTitle($_POST['title']);
         $post->setContent($_POST['content']);
         $post->setExcerpt($_POST['excerpt']);
-        $post->setAuthor($_POST['author']);
+        $user = new User();
+        $user->setId($_POST['author']);
+        $post->setUser($user);
         $success = (new PostRepository())->updatePost($post);
         if (!$success) {
             Alerts::addAlert('danger', 'Impossible d\'effectuer la modification du post');

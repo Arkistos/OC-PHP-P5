@@ -14,72 +14,72 @@ class Comment
     protected string $user_lastname;
     protected User $user;
 
-    public function getId():int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getContent():string
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function getCreatedAt():string
+    public function getCreatedAt(): string
     {
         return $this->created_at;
     }
 
-    public function getApproved():bool
+    public function getApproved(): bool
     {
         return $this->approved;
     }
 
-    public function getUserId():int
+    public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    public function getPostId():int
+    public function getPostId(): int
     {
         return $this->post_id;
     }
 
-    public function getUser():User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setId(int $id):void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setContent(string $content):void
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }
 
-    public function setCreatedAt(string $createdAt):void
+    public function setCreatedAt(string $createdAt): void
     {
         $this->created_at = $createdAt;
     }
 
-    public function setApproved(bool $approved):void
+    public function setApproved(bool $approved): void
     {
         $this->approved = $approved;
     }
 
-    public function setUserId(int $userId):void
+    public function setUserId(int $userId): void
     {
         $this->user_id = $userId;
     }
 
-    public function setPostId(int $postId):void
+    public function setPostId(int $postId): void
     {
         $this->post_id = $postId;
     }
 
-    public function setUser(User $user):void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }

@@ -111,8 +111,9 @@ class CommentRepository
             'SELECT COUNT(*) FROM comment WHERE post_id = :post_id AND approved = 0',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $statement->execute(['post_id'=>$id]);
+        $statement->execute(['post_id' => $id]);
         $count = $statement->fetch()[0];
+
         return $count;
     }
 }

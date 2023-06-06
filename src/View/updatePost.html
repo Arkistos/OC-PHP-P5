@@ -8,7 +8,7 @@
 <form action="/updatepost/{{post.getId}}" method="post" class="col-lg-6 margin-auto">
     <select class="form-select  mb-3" aria-label="Default select example" id="author" name="author">
         {% for admin in admins %}
-        <option value={{admin.getId}}>{{admin.getFirstname}} {{admin.getLastname}}</option>
+        <option {% if admin.getId == post.getUser.getId %} selected {% endif %}  value={{admin.getId}}>{{admin.getFirstname}} {{admin.getLastname}}</option>
         {% endfor %}
       </select>
     <div class="form-floating mb-3">

@@ -5,13 +5,14 @@ namespace App\Model\Repository;
 use App\Model\Entity\Post;
 use App\Model\Entity\User;
 use App\Service\Database;
+use DateTime;
 
 class PostRepository
 {
     public function getPost(string $identifier): Post
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT post.id as post_id, post.title, post.excerpt, post.content, DATE_FORMAT(post.updated_at, '%d/%m/%Y') AS updated_at, user.firstname, user.lastname, user.id as user_id FROM post INNER JOIN user ON post.user_id=user.id WHERE post.id=:id",
+            "SELECT post.id as post_id, post.title, post.excerpt, post.content, post.updated_at, user.firstname, user.lastname, user.id as user_id FROM post INNER JOIN user ON post.user_id=user.id WHERE post.id=:id",
             [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]
         );
 
@@ -26,7 +27,7 @@ class PostRepository
         $post->setTitle($statement['title']);
         $post->setExcerpt($statement['excerpt']);
         $post->setContent($statement['content']);
-        $post->setUpdatedAt($statement['updated_at']);
+        $post->setUpdatedAt((new DateTime($statement['updated_at']))->format('d-m-Y'));
         $post->setUser($user);
 
         return $post;
@@ -35,7 +36,7 @@ class PostRepository
     public function getPosts(): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT post.id as post_id, post.title, post.excerpt, post.content, DATE_FORMAT(post.updated_at, '%d/%m/%Y') AS updated_at, user.firstname, user.lastname, user.id as user_id FROM post INNER JOIN user ON post.user_id=user.id"
+            "SELECT post.id as post_id, post.title, post.excerpt, post.content, post.updated_at, user.firstname, user.lastname, user.id as user_id FROM post INNER JOIN user ON post.user_id=user.id"
         );
         $statement->execute();
         $posts = [];
@@ -49,7 +50,7 @@ class PostRepository
             $post->setTitle($line['title']);
             $post->setExcerpt($line['excerpt']);
             $post->setContent($line['content']);
-            $post->setUpdatedAt($line['updated_at']);
+            $post->setUpdatedAt((new DateTime($line['updated_at']))->format('d-m-Y'));
             $post->setUser($user);
             array_push($posts, $post);
         }

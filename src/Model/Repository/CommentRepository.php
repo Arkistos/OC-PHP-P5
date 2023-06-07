@@ -5,14 +5,13 @@ namespace App\Model\Repository;
 use App\Model\Entity\Comment;
 use App\Model\Entity\User;
 use App\Service\Database;
-use DateTime;
 
 class CommentRepository
 {
     public function getComments(int $post): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT comment.id, comment.user_id, comment.content, comment.approved, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
+            'SELECT comment.id, comment.user_id, comment.content, comment.approved, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $statement->execute(['post_id' => $post]);
@@ -26,7 +25,7 @@ class CommentRepository
             $comment->setId($line['id']);
             $comment->setContent($line['content']);
             $comment->setApproved($line['approved']);
-            $comment->setCreatedAt((new DateTime($line['created_at']))->format('d-m-Y'));
+            $comment->setCreatedAt((new \DateTime($line['created_at']))->format('d-m-Y'));
             $comment->setUser($user);
             array_push($comments, $comment);
         }
@@ -50,10 +49,10 @@ class CommentRepository
         return $comment;
     }
 
-    public function getUnapprovedComments(): array
+    public function getApprovedComments(): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT comment.id, comment.user_id, comment.content, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 0 ORDER BY created_at DESC",
+            'SELECT comment.id, comment.user_id, comment.content, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 1 ORDER BY created_at DESC',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $statement->execute();
@@ -65,7 +64,7 @@ class CommentRepository
             $user->setLastname($line['lastname']);
             $comment->setId($line['id']);
             $comment->setContent($line['content']);
-            $comment->setCreatedAt((new DateTime($line['created_at']))->format('d-m-Y'));
+            $comment->setCreatedAt((new \DateTime($line['created_at']))->format('d-m-Y'));
             $comment->setUser($user);
             array_push($comments, $comment);
         }

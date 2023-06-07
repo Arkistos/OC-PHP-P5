@@ -20,7 +20,12 @@ class PostController extends Controller
     public function post(int $post_id): void
     {
         $post = (new PostRepository())->getPost($post_id);
-        $comments = (new CommentRepository())->getComments($post_id);
+
+        if (isset($_SESSION['user']) && 'admin' == $_SESSION['user']->getRole()) {
+            $comments = (new CommentRepository())->getComments($post_id);
+        } else {
+            $comments = (new CommentRepository())->getApprovedComments($post_id);
+        }
 
         echo $this->getTwig()->render('post.html', [
                 'post' => $post,

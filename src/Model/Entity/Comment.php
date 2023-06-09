@@ -10,8 +10,6 @@ class Comment
     protected bool $approved;
     protected int $user_id;
     protected int $post_id;
-    protected string $user_firstname;
-    protected string $user_lastname;
     protected User $user;
 
     public function getId(): int

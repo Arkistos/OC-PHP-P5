@@ -36,7 +36,7 @@ class Post
         return $this->updated_at;
     }
 
-    public function getUser():User
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -66,7 +66,7 @@ class Post
         $this->updated_at = $updatedAt;
     }
 
-    public function setUser(User $user):void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }

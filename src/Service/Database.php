@@ -14,8 +14,4 @@ class Database
 
         return self::$database;
     }
-
-
-
-
 }

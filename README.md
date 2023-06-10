@@ -6,19 +6,25 @@ Ce projet est un blog développé en PHP dans le cadre du cours "Développez vot
 
 1. Clonez ce repository en utilisant la commande suivante :
 
-   ```
+   ```bash
    git clone https://github.com/Arkistos/OC-PHP-P5.git
    ```
 
 2. Accédez au répertoire du projet :
 
-   ```
+   ```bash
    cd OC-PHP-P5
    ```
 
-3. Importez la base de données fournie dans le fichier `database.sql` dans votre système de gestion de base de données (par exemple, MySQL).
+3. Installer les dépendances
 
-4. Configurez les informations de connexion à la base de données dans le fichier `config.php` :
+   ```bash 
+   composer install
+   ```
+
+4. Importez la base de données fournie dans le fichier `database.sql` dans votre système de gestion de base de données (par exemple, MySQL).
+
+5. Configurez les informations de connexion à la base de données dans le fichier `config.php` :
 
    ```php
    <?php
@@ -28,7 +34,7 @@ Ce projet est un blog développé en PHP dans le cadre du cours "Développez vot
    define('DB_PASSWORD', 'mot_de_passe');
    ```
 
-5. Lancez un serveur local (par exemple, en utilisant [XAMPP](https://www.apachefriends.org/index.html) ou [WampServer](https://www.wampserver.com/)) et placez les fichiers du projet dans le répertoire approprié.
+6. Lancez un serveur local (par exemple, en utilisant [XAMPP](https://www.apachefriends.org/index.html) ou [WampServer](https://www.wampserver.com/)) et placez les fichiers du projet dans le répertoire approprié.
 
 ## Utilisation
 

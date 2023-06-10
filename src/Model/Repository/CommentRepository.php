@@ -11,7 +11,7 @@ class CommentRepository
     public function getComments(int $post): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT comment.id, comment.user_id, comment.content, comment.approved, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC",
+            'SELECT comment.id, comment.user_id, comment.content, comment.approved, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user ON comment.user_id=user.id WHERE post_id = :post_id ORDER BY created_at DESC',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
         $statement->execute(['post_id' => $post]);
@@ -25,7 +25,7 @@ class CommentRepository
             $comment->setId($line['id']);
             $comment->setContent($line['content']);
             $comment->setApproved($line['approved']);
-            $comment->setCreatedAt($line['created_at']);
+            $comment->setCreatedAt((new \DateTime($line['created_at']))->format('d-m-Y'));
             $comment->setUser($user);
             array_push($comments, $comment);
         }
@@ -49,13 +49,13 @@ class CommentRepository
         return $comment;
     }
 
-    public function getUnapprovedComments(): array
+    public function getApprovedComments($post_id): array
     {
         $statement = Database::getConnection()->prepare(
-            "SELECT comment.id, comment.user_id, comment.content, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 0 ORDER BY created_at DESC",
+            'SELECT comment.id, comment.user_id, comment.content, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 1 AND post_id=:post_id ORDER BY created_at DESC',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $statement->execute();
+        $statement->execute(['post_id' => $post_id]);
         $comments = [];
         foreach ($statement->fetchAll() as $line) {
             $comment = new Comment();
@@ -64,7 +64,7 @@ class CommentRepository
             $user->setLastname($line['lastname']);
             $comment->setId($line['id']);
             $comment->setContent($line['content']);
-            $comment->setCreatedAt($line['created_at']);
+            $comment->setCreatedAt((new \DateTime($line['created_at']))->format('d-m-Y'));
             $comment->setUser($user);
             array_push($comments, $comment);
         }
@@ -111,8 +111,9 @@ class CommentRepository
             'SELECT COUNT(*) FROM comment WHERE post_id = :post_id AND approved = 0',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $statement->execute(['post_id'=>$id]);
+        $statement->execute(['post_id' => $id]);
         $count = $statement->fetch()[0];
+
         return $count;
     }
 }

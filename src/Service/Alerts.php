@@ -4,7 +4,7 @@ namespace App\Service;
 
 class Alerts
 {
-    public static function getAlerts():array
+    public static function getAlerts(): array
     {
         $tempArray = $_SESSION['alerts'];
         $_SESSION['alerts'] = [];
@@ -12,7 +12,7 @@ class Alerts
         return $tempArray;
     }
 
-    public static function addAlert(string $type, string $message):void
+    public static function addAlert(string $type, string $message): void
     {
         array_push($_SESSION['alerts'], ['type' => $type, 'message' => $message]);
     }

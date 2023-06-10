@@ -1,1 +1,32 @@
-@import url(homepage.css);
+#logo{
+    width: 100px;
+    height: 100px;
+}
+
+#profile_pic{
+    width: 100%;
+    max-width: 700px;
+    max-height: 700px;
+}
+
+.hero{
+    margin-top: 00px;
+}
+
+.contact-form{
+    max-width: 500px;
+    margin: auto;
+}
+
+.margin-auto{
+    margin: auto;
+}
+
+#excerpt{
+    height: 100px;
+}
+
+#content{
+    height: 400px;
+}
+

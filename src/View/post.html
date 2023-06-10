@@ -33,7 +33,7 @@
 					<div class="fw-bold"> <strong>{{ comment.getUser.getFirstname }} {{comment.getUser.getLastname }}</strong> le {{ comment.getCreatedAt }}</div>
 					{{ comment.getContent }}
 				</div>
-				{% if user %}
+				{% if user.getRole == 'admin' %}
 				<a href="/deletecomment/{{comment.getId}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
 				{% if comment.getApproved == false %}
 				<a href="/confirmcomment/{{comment.getId}}"><button type="button" class="btn btn-success">Valider</button></a>

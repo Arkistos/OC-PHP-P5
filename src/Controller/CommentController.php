@@ -7,16 +7,18 @@ use App\Service\Alerts;
 
 class CommentController extends Controller
 {
-    public function addComment(int $post_id):void
+    public function addComment(int $post_id): void
     {
         if (!isset($_SESSION['user'])) {
             header('Location: /posts/'.$post_id);
+
             return;
         }
 
-        if(empty($_POST['comment'])){
+        if (empty($_POST['comment'])) {
             Alerts::addAlert('danger', 'Champs manquant');
             header('Location: /posts/'.$post_id);
+
             return;
         }
 
@@ -29,28 +31,31 @@ class CommentController extends Controller
         header('Location: /posts/'.$post_id);
     }
 
-    public function approveComment(int $comment_id):void{
+    public function approveComment(int $comment_id): void
+    {
         $success = (new CommentRepository())->approveComment($comment_id);
 
-        if($success){
+        if ($success) {
             Alerts::addAlert('success', 'Le commentaire à été validé');
         } else {
             Alerts::addAlert('danger', 'Le commentaire n\'a pas pu être validé');
         }
         header('Location: /admin');
+
         return;
     }
 
-    public function deleteComment(int $comment_id):void{
+    public function deleteComment(int $comment_id): void
+    {
         $success = (new CommentRepository())->deleteComment($comment_id);
 
-        if($success){
+        if ($success) {
             Alerts::addAlert('success', 'Le commentaire à été supprimé');
         } else {
             Alerts::addAlert('danger', 'Le commentaire n\'a pas pu être supprimé');
         }
         header('Location: /admin');
+
         return;
     }
-    
 }

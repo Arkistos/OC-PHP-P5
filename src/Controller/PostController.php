@@ -20,7 +20,12 @@ class PostController extends Controller
     public function post(int $post_id): void
     {
         $post = (new PostRepository())->getPost($post_id);
-        $comments = (new CommentRepository())->getComments($post_id);
+
+        if (isset($_SESSION['user']) && 'admin' == $_SESSION['user']->getRole()) {
+            $comments = (new CommentRepository())->getComments($post_id);
+        } else {
+            $comments = (new CommentRepository())->getApprovedComments($post_id);
+        }
 
         echo $this->getTwig()->render('post.html', [
                 'post' => $post,
@@ -72,16 +77,16 @@ class PostController extends Controller
         }
 
         $admins = (new UserRepository())->getAdmins();
-       
 
         if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['excerpt']) || !isset($_POST['author'])) {
-            echo $this->getTwig()->render('addPost.html', ['admins'=>$admins]);
+            echo $this->getTwig()->render('addPost.html', ['admins' => $admins]);
+
             return;
         }
 
         if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['excerpt']) || empty($_POST['author'])) {
             Alerts::addAlert('danger', 'Champs manquant');
-            echo $this->getTwig()->render('addPost.html',['admins'=>$admins]);
+            echo $this->getTwig()->render('addPost.html', ['admins' => $admins]);
 
             return;
         }
@@ -118,7 +123,7 @@ class PostController extends Controller
         if (!isset($_POST['title']) || !isset($_POST['excerpt']) || !isset($_POST['content']) || !isset($_POST['author'])) {
             echo $this->getTwig()->render('updatePost.html', [
                 'post' => $post,
-                'admins' => $admins
+                'admins' => $admins,
             ]);
 
             return;

@@ -49,13 +49,13 @@ class CommentRepository
         return $comment;
     }
 
-    public function getApprovedComments(): array
+    public function getApprovedComments($post_id): array
     {
         $statement = Database::getConnection()->prepare(
-            'SELECT comment.id, comment.user_id, comment.content, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 1 ORDER BY created_at DESC',
+            'SELECT comment.id, comment.user_id, comment.content, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 1 AND post_id=:post_id ORDER BY created_at DESC',
             [\PDO::ATTR_CURSOR, \PDO::CURSOR_FWDONLY]
         );
-        $statement->execute();
+        $statement->execute(['post_id' => $post_id]);
         $comments = [];
         foreach ($statement->fetchAll() as $line) {
             $comment = new Comment();

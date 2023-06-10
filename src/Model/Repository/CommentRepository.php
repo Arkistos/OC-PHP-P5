@@ -49,7 +49,7 @@ class CommentRepository
         return $comment;
     }
 
-    public function getApprovedComments($post_id): array
+    public function getApprovedComments(int $post_id): array
     {
         $statement = Database::getConnection()->prepare(
             'SELECT comment.id, comment.user_id, comment.content, comment.created_at, user.firstname, user.lastname FROM comment INNER JOIN user  ON comment.user_id=user.id WHERE approved = 1 AND post_id=:post_id ORDER BY created_at DESC',
